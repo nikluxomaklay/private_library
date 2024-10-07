@@ -1,0 +1,25 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Books{% endblock %}
+
+{% block content_title %}Authors{% endblock %}
+
+{% block actions %}
+<div class="container my-2 py-2 border justify-content-end">
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <form action="{% url 'author_new' %}" method="GET">{% csrf_token %}<button type="submit" class="btn btn-primary btn-sm">Add author</button></form>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container my-2 py-2 border">
+  <ul>
+    {% for author in object_list %}
+    <li>
+      <a href="{% url 'author_detail' pk=author.pk %}">{{ author.full_name }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

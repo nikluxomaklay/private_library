@@ -1,0 +1,25 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Books{% endblock %}
+
+{% block content_title %}Book series{% endblock %}
+
+{% block actions %}
+<div class="container my-2 py-2 border justify-content-end">
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <form action="{% url 'book_series_new' %}" method="GET">{% csrf_token %}<button type="submit" class="btn btn-primary btn-sm">Add book series</button></form>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container my-2 py-2 border">
+  <ul>
+    {% for book_series in object_list %}
+    <li>
+      <a href="{{ book_series.get_absolute_url }}">{{ book_series.name }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

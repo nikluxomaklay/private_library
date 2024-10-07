@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_messages %}
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Title{% endblock %}</title>
+</head>
+<body>
+  <div class="container-fluid py-4">
+    <div class="row border py-2">
+      <h3>{% block content_title %}{% endblock %}</h3>
+    </div>
+    <div class="row my-4 py-4 border">
+      <div class="col-md-1 mx-2 border">
+        <nav>
+          <div class="nav-blocks">
+            <ul class="menu">
+              <li><a href="{% url 'index' %}">Home</a></li>
+              <li><a href="{% url 'author' %}">Authors</a></li>
+              <li><a href="{% url 'book' %}">Books</a></li>
+              <li><a href="{% url 'year' %}">Years</a></li>
+              <li><a href="{% url 'publisher' %}">Publishers</a></li>
+              <li><a href="{% url 'book_series' %}">Book series</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="col-md-10 border">
+        {% block actions %}{% endblock %}
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+</body>
+</html>

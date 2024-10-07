@@ -1,0 +1,34 @@
+{% extends "publisher/publisher_new.html" %}
+
+{% block title %}Publisher {{ object.full_name_short }}{% endblock %}
+{% block content_title %}Publisher {{ object.full_name_short }}{% endblock %}
+
+
+{% block actions %}
+<div class="container my-2 py-2 border justify-content-end">
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <form action="{% url 'publisher_update' pk=object.pk %}" method="GET">{% csrf_token %}<button type="submit" class="btn btn-secondary btn-sm">Update</button></form>
+    <form action="{% url 'publisher_delete' pk=object.pk %}" method="GET">{% csrf_token %}<button type="submit" class="btn btn-danger btn-sm">Delete</button></form>
+  </div>
+</div>
+{% endblock %}
+
+{% block content_left %}
+<div class="col-6">
+  <ul>
+    <li>{{ object.name }}</li>
+  </ul>
+  <span>Series:</span>
+  <ul>
+    {% for series in object.book_series.all %}
+    <li><a href="{{ series.get_absolute_url }}">{{ series.name }}</a></li>
+    {% endfor %}
+  </ul>
+  <span>Books:</span>
+  <ul>
+    {% for book in object.books.all %}
+    <li><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

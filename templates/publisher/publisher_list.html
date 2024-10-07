@@ -1,0 +1,25 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Books{% endblock %}
+
+{% block content_title %}Publishers{% endblock %}
+
+{% block actions %}
+<div class="container my-2 py-2 border justify-content-end">
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <form action="{% url 'publisher_new' %}" method="GET">{% csrf_token %}<button type="submit" class="btn btn-primary btn-sm">Add publisher</button></form>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container my-2 py-2 border">
+  <ul>
+    {% for publisher in object_list %}
+    <li>
+      <a href="{{ publisher.get_absolute_url }}">{{ publisher.name }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

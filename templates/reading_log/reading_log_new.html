@@ -1,0 +1,26 @@
+{% extends "base_layout.html" %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}Add new reading log{% endblock %}
+
+{% block content_title %}Add new reading log{% endblock %}
+
+{% block actions %}{% endblock %}
+
+{% block content %}
+<div class="col-6">
+  <div class="row justify-content-left">
+    {% block content_left %}
+      <div class="col-6">
+        <form action="{% url 'reading_log_new' %}" method="POST">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          <input type="submit" value="Save">
+        </form>
+      </div>
+    {% endblock %}
+    {% block content_right %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

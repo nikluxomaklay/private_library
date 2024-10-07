@@ -1,0 +1,7 @@
+{% extends "author/author_new.html" %}
+
+{% block title %}Author {{ object.full_name_short }}{% endblock %}
+{% block content_title %}Author {{ object.full_name_short }}{% endblock %}
+
+{% block actions %}{% endblock %}
+{% block form_action %}{% url 'author_update' pk=object.pk %}{% endblock %}

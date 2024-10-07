@@ -1,0 +1,57 @@
+{% extends "book/book_new.html" %}
+
+{% block title %}Book {{ object.title }}{% endblock %}
+{% block content_title %}Book {{ object.title }}{% endblock %}
+
+
+{% block actions %}
+<div class="container my-2 py-2 border justify-content-end">
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <form action="{% url 'reading_log_new' %}" method="GET">
+      {% csrf_token %}
+      <input type="hidden" name="book" value="{{ object.pk }}">
+      <button type="submit" class="btn btn-secondary btn-sm">Add reading log</button>
+    </form>
+    <form action="{% url 'book_update' pk=object.pk %}" method="GET">{% csrf_token %}<button type="submit" class="btn btn-secondary btn-sm">Update book</button></form>
+    <form action="{% url 'book_delete' pk=object.pk %}" method="GET">{% csrf_token %}<button type="submit" class="btn btn-danger btn-sm">Delete book</button></form>
+  </div>
+</div>
+{% endblock %}
+
+{% block content_left %}
+<div class="col-6">
+  <ul>
+    <li>Title: {{ object.title }}</li>
+    {% if object.title_extra %}
+      <li> Title extra: {{ object.title_extra }}</li>
+    {% endif %}
+    {% if object.title_original %}
+      <li> Title original: {{ object.title_original }}</li>
+    {% endif %}
+    {% if object.extended_title_original %}
+      <li> Title extra original: {{ object.extended_title_original }}</li>
+    {% endif %}
+    <li>Publisher: {% if object.publisher %}<a href="{{ object.publisher.get_absolute_url }}">{{ object.publisher }}</a>{% endif %}</li>
+    <li>Series: {% if object.series %}<a href="{{ object.series.get_absolute_url }}">{{ object.series }}</a>{% endif %}</li>
+  </ul>
+  <span>Authors:</span>
+  <ul>
+    {% for author in object.authors.all %}
+    <li><a href="{% url 'author_detail' pk=author.pk %}">{{ author.full_name_short }}</a> </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}
+
+{% block content_right %}
+<div class="col-6">
+  <span>Reading log:</span>
+  <ul>
+    {% autoescape off %}
+    {% for log in object.reading_logs.all %}
+      <li>{{ log.period_for_template }}</li>
+    {% endfor %}
+    {% endautoescape %}
+  </ul>
+</div>
+{% endblock %}

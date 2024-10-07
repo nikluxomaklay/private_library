@@ -1,0 +1,23 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Index{% endblock %}
+
+{% block content_title %}Home{% endblock %}
+
+{% block content %}
+<div class="container my-2 py-2 border">
+  <div class="row justify-content-left">
+    {% block content_left %}
+    <div class="col-6">
+      <span>Last reading:</span>
+      <ul>
+        {% for reading_log in last_reading_logs %}
+        <li>{{ reading_log }}, <a href="{{ reading_log.book.get_absolute_url }}">{{ reading_log.book }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endblock %}
+    {% block content_right %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

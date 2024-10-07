@@ -1,0 +1,7 @@
+{% extends "publisher/publisher_new.html" %}
+
+{% block title %}Publisher {{ object.name }}{% endblock %}
+{% block content_title %}Publisher {{ object.name }}{% endblock %}
+
+{% block actions %}{% endblock %}
+{% block form_action %}{% url 'publisher_update' pk=object.pk %}{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Years{% endblock %}
+
+{% block content_title %}Years{% endblock %}
+
+{% block actions %}
+<div class="container my-2 py-2 border justify-content-end">
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <form action="{% url 'year_new' %}" method="GET">{% csrf_token %}<button type="submit" class="btn btn-primary btn-sm">Add year</button></form>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container my-2 py-2 border">
+  <ul>
+    {% for year in object_list %}
+    <li>
+      <a href="{% url 'year_detail' pk=year.pk %}">{{ year.pk }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

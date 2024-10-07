@@ -1,0 +1,26 @@
+{% extends "base_layout.html" %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}Add new publisher{% endblock %}
+
+{% block content_title %}Add new publisher{% endblock %}
+
+{% block actions %}{% endblock %}
+
+{% block content %}
+<div class="container my-2 py-2 border">
+  <div class="row justify-content-left">
+    {% block content_left %}
+      <div class="col-6">
+        <form action="{% block form_action %}{% url 'publisher_new' %}{% endblock %}" method="POST">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          <input type="submit" value="Save">
+        </form>
+      </div>
+    {% endblock %}
+    {% block content_right %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

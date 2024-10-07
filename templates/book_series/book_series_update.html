@@ -1,0 +1,7 @@
+{% extends "book_series/book_series_new.html" %}
+
+{% block title %}Book series {{ object.name }}{% endblock %}
+{% block content_title %}Book series {{ object.name }}{% endblock %}
+
+{% block actions %}{% endblock %}
+{% block form_action %}{% url 'book_series_update' pk=object.pk %}{% endblock %}

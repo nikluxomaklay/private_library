@@ -1,0 +1,7 @@
+{% extends "year/year_new.html" %}
+
+{% block title %}Year {{ object.pk }}{% endblock %}
+{% block content_title %}Year {{ object.pk }}{% endblock %}
+
+{% block actions %}{% endblock %}
+{% block form_action %}{% url 'year_update' pk=object.pk %}{% endblock %}

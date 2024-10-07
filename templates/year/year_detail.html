@@ -1,0 +1,38 @@
+{% extends "year/year_new.html" %}
+
+{% block title %}Year {{ object.pk }}{% endblock %}
+{% block content_title %}Year {{ object.pk }}{% endblock %}
+
+
+{% block actions %}
+<div class="container my-2 py-2 border justify-content-end">
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <form action="{% url 'year_update' pk=object.pk %}" method="GET">{% csrf_token %}<button type="submit" class="btn btn-secondary btn-sm">Update year</button></form>
+    <form action="{% url 'year_delete' pk=object.pk %}" method="GET">{% csrf_token %}<button type="submit" class="btn btn-danger btn-sm">Delete year</button></form>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container my-2 py-2 border">
+  <div class="row">
+    <div class="col-12">
+      <ul>
+        <li>Year: {{ object.pk }}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <span>Books:</span>
+      <ul>
+        {% for log in object.reading_logs.distinct %}
+        <li>
+          <a href="{% url 'book_detail' pk=log.book.pk %}">{{ log.book.title }}</a> ({% for author in log.book.authors.all %}{% if forlup.counter > 1 %}, {% endif %}<a href="{% url 'author_detail' pk=author.pk %}">{{ author.full_name_short }}</a>{% endfor %})
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

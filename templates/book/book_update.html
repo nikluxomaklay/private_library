@@ -1,0 +1,7 @@
+{% extends "book/book_new.html" %}
+
+{% block title %}Book {{ object.title }}{% endblock %}
+{% block content_title %}Book {{ object.title }}{% endblock %}
+
+{% block actions %}{% endblock %}
+{% block form_action %}{% url 'book_update' pk=object.pk %}{% endblock %}
