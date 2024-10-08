@@ -90,10 +90,10 @@ WSGI_APPLICATION = 'private_library.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': config['DATABASES']['default']['ENGINE'],
-        'NAME': config['DATABASES']['default']['NAME'],
+        'ENGINE': config['DATABASES']['ENGINE'],
     },
 }
+DATABASES['default'].update(**config['DATABASES']['PARAMS'])
 
 
 # Password validation

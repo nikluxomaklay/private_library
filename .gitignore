@@ -163,3 +163,7 @@ cython_debug/
 
 *config.yml
 !default.config.yml
+.pg_service.conf
+!.default.pg_service.conf
+.pgpass
+!.default.pgpass

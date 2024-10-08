@@ -7,8 +7,10 @@ ALLOWED_HOSTS:
   - '127.0.0.1'
 
 DATABASES:
-  default:
-    ENGINE: 'django.db.backends.sqlite3'
-    NAME: 'db.sqlite3'
+  ENGINE: 'django.db.backends.postgresql'
+  PARAMS:
+    OPTIONS:
+      service: '.default.pg_service'
+      passfile: '.default.pgpass'
 
 STATIC_ROOT:
