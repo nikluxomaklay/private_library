@@ -167,3 +167,4 @@ cython_debug/
 !.default.pg_service.conf
 .pgpass
 !.default.pgpass
+!.default.pgpasslibrary_env/
