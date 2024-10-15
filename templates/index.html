@@ -12,7 +12,7 @@
       <span>Last reading:</span>
       <ul>
         {% for reading_log in last_reading_logs %}
-        <li>{{ reading_log }}, <a href="{{ reading_log.book.get_absolute_url }}">{{ reading_log.book }}</a></li>
+        <li>{{ reading_log }}, <a href="{{ reading_log.book.get_absolute_url }}">{{ reading_log.book.title }}</a> ({% for author in reading_log.book.authors.all %}{% if forloop.counter > 1 %}, {% endif %}<a href="{% url 'author_detail' pk=author.pk %}">{{ author.full_name_short }}</a>{% endfor %})</li>
         {% endfor %}
       </ul>
     </div>
