@@ -14,12 +14,16 @@
 
 {% block content %}
 <div class="container my-2 py-2 border">
-  <ul>
-    {% for year in object_list %}
-    <li>
-      <a href="{% url 'year_detail' pk=year.pk %}">{{ year.pk }}</a>
-    </li>
-    {% endfor %}
-  </ul>
+    <div class="row">
+      <div class="col-2">
+        <ul>
+          {% for year in object_list %}
+          <li>
+            <a href="{% url 'year_detail' pk=year.pk %}">{{ year.pk }}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
 </div>
 {% endblock %}

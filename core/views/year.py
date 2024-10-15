@@ -29,6 +29,11 @@ class YearDetailView(DetailView):
         'year',
     )
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object_list'] = self.get_queryset().order_by('-year')
+        return context
+
 
 class YearUpdateView(UpdateView):
     template_name = 'year/year_update.html'

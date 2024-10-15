@@ -16,22 +16,37 @@
 {% block content %}
 <div class="container my-2 py-2 border">
   <div class="row">
-    <div class="col-12">
+    <div class="col-2">
       <ul>
-        <li>Year: {{ object.pk }}</li>
-      </ul>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12">
-      <span>Books:</span>
-      <ul>
-        {% for log in object.reading_logs.distinct %}
+        {% for year in object_list %}
         <li>
-          <a href="{% url 'book_detail' pk=log.book.pk %}">{{ log.book.title }}</a> ({% for author in log.book.authors.all %}{% if forloop.counter > 1 %}, {% endif %}<a href="{% url 'author_detail' pk=author.pk %}">{{ author.full_name_short }}</a>{% endfor %})
+          <a href="{% url 'year_detail' pk=year.pk %}">{{ year.pk }}</a>
         </li>
         {% endfor %}
       </ul>
+    </div>
+    <div class="col-10">
+      <div class="container border">
+        <div class="row">
+          <div class="col-12">
+            <ul>
+              <li>Year: {{ object.pk }}</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <span>Books:</span>
+            <ul>
+              {% for log in object.reading_logs.distinct %}
+              <li>
+                <a href="{% url 'book_detail' pk=log.book.pk %}">{{ log.book.title }}</a> ({% for author in log.book.authors.all %}{% if forloop.counter > 1 %}, {% endif %}<a href="{% url 'author_detail' pk=author.pk %}">{{ author.full_name_short }}</a>{% endfor %})
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
