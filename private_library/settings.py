@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'private_library',
     'core',
+    'front',
 ]
 
 MIDDLEWARE = [

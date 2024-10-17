@@ -1,12 +1,12 @@
 from django.urls import path
 
-from core.views import author
-from core.views import book
-from core.views import book_series
-from core.views import index
-from core.views import publisher
-from core.views import reading_log
-from core.views import year
+from front.views import author
+from front.views import book
+from front.views import book_series
+from front.views import index
+from front.views import publisher
+from front.views import reading_log
+from front.views import year
 
 urlpatterns = [
     path('', index.IndexPageView.as_view(), name='index'),
