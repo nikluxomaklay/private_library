@@ -40,7 +40,7 @@
             <ul>
               {% for log in object.reading_logs.distinct %}
               <li>
-                <a href="{% url 'book_detail' pk=log.book.pk %}">{{ log.book.title }}</a> ({% for author in log.book.authors.all %}{% if forloop.counter > 1 %}, {% endif %}<a href="{% url 'author_detail' pk=author.pk %}">{{ author.full_name_short }}</a>{% endfor %})
+                <a href="{% url 'book_edition_detail' pk=log.book_edition.pk %}">{{ log.book_edition.title }}</a> ({% for author in log.book_edition.authors.all %}{% if forloop.counter > 1 %}, {% endif %}<a href="{% url 'author_detail' pk=author.pk %}">{{ author.full_name_short }}</a>{% endfor %})
               </li>
               {% endfor %}
             </ul>

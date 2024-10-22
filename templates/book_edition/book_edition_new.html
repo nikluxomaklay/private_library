@@ -1,0 +1,52 @@
+{% extends "base_layout.html" %}
+
+{% load static %}
+{% load django_bootstrap5 %}
+
+{% block title %}Add new book edition{% endblock %}
+
+{% block content_title %}Add new book edition{% endblock %}
+
+{% block actions %}{% endblock %}
+
+{% block content %}
+<div class="container my-2 py-2 border">
+  <div class="row justify-content-left">
+    {% block content_left %}
+      <div class="col-6">
+        <form id="add-form" action="{% block form_action %}{% url 'book_edition_new' %}{% endblock %}" method="POST">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          <input type="submit" value="Save">
+        </form>
+      </div>
+    {% endblock %}
+    {% block content_right %}{% endblock %}
+  </div>
+</div>
+
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+{{ form.media }}
+
+<script>
+(function($) {
+    $('#add-form').click(function() {
+        var index = $('#id_inline_test_models-TOTAL_FORMS').val()
+        var newTable = $('#id_inline_test_models-__prefix__-DELETE').parents('table').clone()
+        newTable.find(':input').each(function() {
+            for (attr of ['name', 'id'])
+                $(this).attr(
+                    attr,
+                    $(this).attr(attr).replace('__prefix__', index)
+                )
+        })
+        newTable.insertBefore($(this))
+        $('#id_inline_test_models-TOTAL_FORMS').val(
+            parseInt($('#id_inline_test_models-TOTAL_FORMS').val()) + 1
+        )
+        newTable.slideDown()
+    })
+})($)
+</script>
+{% endblock %}

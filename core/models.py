@@ -24,29 +24,18 @@ class Book(models.Model):
         null=True, blank=True,
     )
 
-    publisher = models.ForeignKey(
-        'Publisher',
-        on_delete=models.PROTECT,
-        related_name='books',
-        null=True, blank=True,
-    )
-    series = models.ForeignKey(
-        'BookSeries',
-        on_delete=models.PROTECT,
-        related_name='books',
-        null=True, blank=True,
-    )
-    publication_year = models.PositiveSmallIntegerField(null=True, blank=True)
-    isbn = models.CharField(
-        max_length=20,
-        null=True, blank=True,
-    )
-
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
         return reverse("book_detail", kwargs={"pk": self.pk})
+
+    def reading_logs(self):
+        return ReadingLog.objects.filter(
+            book_edition__book=self,
+        ).order_by(
+            'book_edition__book__title',
+        )
 
 
 class Author(models.Model):
@@ -104,6 +93,61 @@ class Author(models.Model):
         return None
 
 
+class BookEdition(models.Model):
+    book = models.ForeignKey(
+        'Book',
+        on_delete=models.PROTECT,
+        related_name='editions',
+        null=False, blank=False,
+    )
+    publisher = models.ForeignKey(
+        'Publisher',
+        on_delete=models.PROTECT,
+        related_name='book_editions',
+        null=True, blank=True,
+    )
+    series = models.ForeignKey(
+        'BookSeries',
+        on_delete=models.PROTECT,
+        related_name='book_editions',
+        null=True, blank=True,
+    )
+    publication_year = models.PositiveSmallIntegerField(null=True, blank=True)
+    isbn = models.CharField(
+        max_length=20,
+        null=True, blank=True,
+    )
+
+    def __str__(self):
+        return '; '.join(
+            [
+                item for item
+                in (self.title, self.publisher, self.publication_year)
+                if item is not None
+            ],
+        )
+
+    @property
+    def title(self):
+        return self.book.title
+
+    @property
+    def extended_title(self):
+        return self.book.extended_title
+
+    @property
+    def title_original(self):
+        return self.book.title_original
+
+    @property
+    def extended_title_original(self):
+        return self.book.extended_title_original
+
+    @property
+    def authors(self):
+        return self.book.authors
+
+
 class Publisher(models.Model):
     name = models.CharField(max_length=100)
 
@@ -145,8 +189,8 @@ class Year(models.Model):
 
 
 class ReadingLog(models.Model):
-    book = models.ForeignKey(
-        'Book',
+    book_edition = models.ForeignKey(
+        'BookEdition',
         on_delete=models.PROTECT,
         related_name='reading_logs',
     )
@@ -175,7 +219,7 @@ class ReadingLog(models.Model):
         return self.period
 
     def get_absolute_url(self):
-        return self.book.get_absolute_url()
+        return self.book_edition.book_edition.get_absolute_url()
 
     @property
     def period(self):

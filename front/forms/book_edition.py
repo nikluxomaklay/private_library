@@ -1,29 +1,23 @@
 from dal import autocomplete
 from django import forms
 
-from core.models import Book
+from core.models import BookEdition
 
 
-class BookForm(forms.ModelForm):
+class BookEditionForm(forms.ModelForm):
     def clean(self):
         return super().clean()
 
     class Meta:
-        model = Book
+        model = BookEdition
         fields = (
-            'title',
-            'extended_title',
-            'title_original',
-            'extended_title_original',
-            'authors',
+            'book',
             'publisher',
             'series',
-            'publication_year',
-            'isbn',
         )
         widgets = {
-            'authors': autocomplete.ModelSelect2Multiple(
-                url='author_autocomplete',
+            'book': autocomplete.ModelSelect2Multiple(
+                url='book_autocomplete',
             ),
             'publisher': autocomplete.Select2(
                 url='publisher_autocomplete',

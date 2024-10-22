@@ -7,7 +7,7 @@ class ReadingLogNewView(CreateView):
     template_name = 'reading_log/reading_log_new.html'
     model = ReadingLog
     fields = (
-        'book',
+        'book_edition',
         'year_start',
         'month_start',
         'year_finish',
