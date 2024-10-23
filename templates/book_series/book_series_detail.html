@@ -20,8 +20,12 @@
   </ul>
   <span>Books:</span>
   <ul>
-    {% for book in object.books.all %}
-    <li><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></li>
+    {% for book_edition in object.book_editions.all %}
+    <li>
+      <a href="{{ book_edition.get_absolute_url }}">{{ book_edition.title }}</a>
+      {% if book_edition.publisher %} - <a href="{% url 'publisher_detail' pk=book_edition.publisher.pk %}">{{ book_edition.publisher }}</a>{% endif %}
+      {% if book_edition.publication_year %} - {{ book_edition.publication_year }}{% endif %}
+    </li>
     {% endfor %}
   </ul>
   <span>Publisher:</span>

@@ -26,8 +26,12 @@
   </ul>
   <span>Books:</span>
   <ul>
-    {% for book in object.books.all %}
-    <li><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></li>
+    {% for book_edition in object.book_editions.all %}
+    <li>
+      <a href="{{ book_edition.get_absolute_url }}">{{ book_edition.title }}</a>
+      {% if book_edition.publication_year %} - {{ book_edition.publication_year }}{% endif %}
+      {% if book_edition.series %} - (<a href="{% url 'book_series_detail' pk=book_edition.series.pk %}">"{{ book_edition.series.name }}"</a>){% endif %}
+    </li>
     {% endfor %}
   </ul>
 </div>

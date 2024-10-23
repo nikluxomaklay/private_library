@@ -5,8 +5,9 @@ from django.views.generic.edit import DeleteView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 
-from front.forms.book_edition import BookEditionForm
 from core.models import BookEdition
+from front.forms.book_edition import BookEditionNewForm
+from front.forms.book_edition import BookEditionUpdateForm
 
 
 class BookEditionListView(ListView):
@@ -18,35 +19,18 @@ class BookEditionListView(ListView):
 class BookEditionNewView(CreateView):
     template_name = 'book_edition/book_edition_new.html'
     model = BookEdition
-    form_class = BookEditionForm
+    form_class = BookEditionNewForm
 
 
 class BookEditionDetailView(DetailView):
     template_name = 'book_edition/book_edition_detail.html'
     model = BookEdition
-    fields = (
-        'book__title',
-        'book__extended_title',
-        'book__authors',
-        'publisher',
-        'series',
-        'publication_year',
-        'isbn',
-    )
 
 
 class BookEditionUpdateView(UpdateView):
     template_name = 'book_edition/book_edition_update.html'
     model = BookEdition
-    fields = (
-        'book__title',
-        'book__extended_title',
-        'book__authors',
-        'publisher',
-        'series',
-        'publication_year',
-        'isbn',
-    )
+    form_class = BookEditionUpdateForm
 
 
 class BookEditionDeleteView(DeleteView):

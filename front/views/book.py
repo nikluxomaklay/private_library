@@ -30,10 +30,6 @@ class BookDetailView(DetailView):
         'title',
         'extended_title',
         'authors',
-        'publisher',
-        'series',
-        'publication_year',
-        'isbn',
     )
 
 
@@ -44,10 +40,6 @@ class BookUpdateView(UpdateView):
         'title',
         'extended_title',
         'authors',
-        'publisher',
-        'series',
-        'publication_year',
-        'isbn',
     )
 
 

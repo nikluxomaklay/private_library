@@ -119,13 +119,26 @@ class BookEdition(models.Model):
     )
 
     def __str__(self):
-        return '; '.join(
-            [
-                item for item
+        return ' - '.join(
+            (
+                str(item) for item
                 in (self.title, self.publisher, self.publication_year)
                 if item is not None
-            ],
+            ),
         )
+
+    @property
+    def publication_info(self):
+        return ' - '.join(
+            (
+                str(item) for item
+                in (self.publisher, self.publication_year)
+                if item is not None
+            ),
+        )
+
+    def get_absolute_url(self):
+        return reverse("book_edition_detail", kwargs={"pk": self.pk})
 
     @property
     def title(self):
@@ -219,7 +232,7 @@ class ReadingLog(models.Model):
         return self.period
 
     def get_absolute_url(self):
-        return self.book_edition.book_edition.get_absolute_url()
+        return self.book_edition.get_absolute_url()
 
     @property
     def period(self):

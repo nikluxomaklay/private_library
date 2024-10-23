@@ -38,9 +38,13 @@
           <div class="col-12">
             <span>Books:</span>
             <ul>
-              {% for log in object.reading_logs.distinct %}
+              {% for reading_log in object.reading_logs.distinct %}
               <li>
-                <a href="{% url 'book_edition_detail' pk=log.book_edition.pk %}">{{ log.book_edition.title }}</a> ({% for author in log.book_edition.authors.all %}{% if forloop.counter > 1 %}, {% endif %}<a href="{% url 'author_detail' pk=author.pk %}">{{ author.full_name_short }}</a>{% endfor %})
+                <a href="{{ reading_log.book_edition.get_absolute_url }}">{{ reading_log.book_edition.title }}</a> /
+                {% for author in reading_log.book_edition.authors.all %}{% if forloop.counter > 1 %}, {% endif %}<a href="{% url 'author_detail' pk=author.pk %}">{{ author.full_name_short }}</a>{% endfor %}
+                {% if reading_log.book_edition.publisher %} - <a href="{% url 'publisher_detail' pk=reading_log.book_edition.publisher.pk %}">{{ reading_log.book_edition.publisher }}</a>{% endif %}
+                {% if reading_log.book_edition.publication_year %} - {{ reading_log.book_edition.publication_year }}{% endif %}
+                {% if reading_log.book_edition.series %} - (<a href="{% url 'book_series_detail' pk=reading_log.book_edition.series.pk %}">"{{ reading_log.book_edition.series.name }}"</a>){% endif %}
               </li>
               {% endfor %}
             </ul>

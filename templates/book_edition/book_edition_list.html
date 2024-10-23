@@ -18,6 +18,9 @@
     {% for book_edition in object_list %}
     <li>
       <a href="{% url 'book_edition_detail' pk=book_edition.pk %}">{{ book_edition.title }}</a>
+      {% if book_edition.publisher %} - <a href="{% url 'publisher_detail' pk=book_edition.publisher.pk %}">{{ book_edition.publisher }}</a>{% endif %}
+      {% if book_edition.publication_year %} - {{ book_edition.publication_year }}{% endif %}
+      {% if book_edition.series %} - (<a href="{% url 'book_series_detail' pk=book_edition.series.pk %}">"{{ book_edition.series.name }}"</a>){% endif %}
     </li>
     {% endfor %}
   </ul>

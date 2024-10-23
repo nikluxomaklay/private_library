@@ -12,7 +12,14 @@
       <span>Last reading:</span>
       <ul>
         {% for reading_log in last_reading_logs %}
-        <li>{{ reading_log }}, <a href="{{ reading_log.book_edition.get_absolute_url }}">{{ reading_log.book_edition.title }}</a> ({% for author in reading_log.book_edition.authors.all %}{% if forloop.counter > 1 %}, {% endif %}<a href="{% url 'author_detail' pk=author.pk %}">{{ author.full_name_short }}</a>{% endfor %})</li>
+        <li>
+          {{ reading_log }},
+          <a href="{{ reading_log.book_edition.get_absolute_url }}">{{ reading_log.book_edition.title }}</a> /
+          {% for author in reading_log.book_edition.authors.all %}{% if forloop.counter > 1 %}, {% endif %}<a href="{% url 'author_detail' pk=author.pk %}">{{ author.full_name_short }}</a>{% endfor %}
+          {% if reading_log.book_edition.publisher %} - <a href="{% url 'publisher_detail' pk=reading_log.book_edition.publisher.pk %}">{{ reading_log.book_edition.publisher }}</a>{% endif %}
+          {% if reading_log.book_edition.publication_year %} - {{ reading_log.book_edition.publication_year }}{% endif %}
+          {% if reading_log.book_edition.series %} - (<a href="{% url 'book_series_detail' pk=reading_log.book_edition.series.pk %}">"{{ reading_log.book_edition.series.name }}"</a>){% endif %}
+        </li>
         {% endfor %}
       </ul>
     </div>
