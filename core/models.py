@@ -237,56 +237,72 @@ class ReadingLog(models.Model):
     @property
     def period(self):
         if self.year_start == self.year_finish:
-            if (
-                self.month_start == MonthEnum.March and
-                self.month_finish == MonthEnum.May
-            ):
-                result = f'Spring {self.year_start}'
-            elif (
-                self.month_start == MonthEnum.June and
-                self.month_finish == MonthEnum.August
-            ):
-                result = f'Summer {self.year_start}'
-            elif (
-                self.month_start == MonthEnum.September and
-                self.month_finish == MonthEnum.November
-            ):
-                result = f'Autumn {self.year_start}'
-            elif self.month_start:
-                result = f'{self.get_month_start_display()} {self.year_start}'
-            else:
-                result = str(self.year_start)
-        elif not self.year_start:
-            if self.month_finish:
-                result = f'{self.get_month_finish_display()} {self.year_finish}'
-            else:
-                result = str(self.year_finish)
-        elif not self.year_finish:
-            if self.month_start:
-                result = f'{self.get_month_start_display()} {self.year_start}'
-            else:
-                result = str(self.year_start)
+            result = (
+                f'{self.get_month_start_display()} - '
+                f'{self.get_month_finish_display()} '
+                f'{self.year_start}'
+            )
         else:
-            if (
-                self.year_finish.year - self.year_start.year == 1 and
-                self.month_start == MonthEnum.December and
-                self.month_finish == MonthEnum.February
-            ):
-                result = f'Winter {self.year_start} - {self.year_finish}'
-            else:
-                if self.month_start:
-                    result_1 = f'{self.month_start} {self.year_start}'
-                else:
-                    result_1 = self.year_start
-
-                if self.month_finish:
-                    result_2 = f'{self.month_finish} {self.year_finish}'
-                else:
-                    result_2 = self.year_finish
-
-                result = f'{result_1} - {result_2}'
+            result = (
+                f'{self.get_month_start_display()} {self.year_start} - '
+                f'{self.get_month_finish_display()} {self.year_finish}'
+            )
 
         return result
+
+    # @property
+    # def period(self):
+    #     if self.year_start == self.year_finish:
+    #         if (
+    #             self.month_start == MonthEnum.March and
+    #             self.month_finish == MonthEnum.May
+    #         ):
+    #             result = f'Spring {self.year_start}'
+    #         elif (
+    #             self.month_start == MonthEnum.June and
+    #             self.month_finish == MonthEnum.August
+    #         ):
+    #             result = f'Summer {self.year_start}'
+    #         elif (
+    #             self.month_start == MonthEnum.September and
+    #             self.month_finish == MonthEnum.November
+    #         ):
+    #             result = f'Autumn {self.year_start}'
+    #         elif self.month_start:
+    #             result = f'{self.get_month_start_display()} {self.year_start}'
+    #         else:
+    #             result = str(self.year_start)
+    #     elif not self.year_start:
+    #         if self.month_finish:
+    #             result = f'{self.get_month_finish_display()} {self.year_finish}'
+    #         else:
+    #             result = str(self.year_finish)
+    #     elif not self.year_finish:
+    #         if self.month_start:
+    #             result = f'{self.get_month_start_display()} {self.year_start}'
+    #         else:
+    #             result = str(self.year_start)
+    #     else:
+    #         if (
+    #             self.year_finish.year - self.year_start.year == 1 and
+    #             self.month_start == MonthEnum.December and
+    #             self.month_finish == MonthEnum.February
+    #         ):
+    #             result = f'Winter {self.year_start} - {self.year_finish}'
+    #         else:
+    #             if self.month_start:
+    #                 result_1 = f'{self.month_start} {self.year_start}'
+    #             else:
+    #                 result_1 = self.year_start
+    #
+    #             if self.month_finish:
+    #                 result_2 = f'{self.month_finish} {self.year_finish}'
+    #             else:
+    #                 result_2 = self.year_finish
+    #
+    #             result = f'{result_1} - {result_2}'
+    #
+    #     return result
 
     @property
     def period_for_template(self):
