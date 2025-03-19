@@ -312,45 +312,11 @@ class ReadingLog(models.Model):
                 f'{self.year_start}'
                 f'</a>'
             )
-            if (
-                self.month_start == MonthEnum.March and
-                self.month_finish == MonthEnum.May
-            ):
-                result = f'Spring {year_start_link}'
-            elif (
-                self.month_start == MonthEnum.June and
-                self.month_finish == MonthEnum.August
-            ):
-                result = f'Summer {year_start_link}'
-            elif (
-                self.month_start == MonthEnum.September and
-                self.month_finish == MonthEnum.November
-            ):
-                result = f'Autumn {year_start_link}'
-            elif self.month_start:
-                result = f'{self.get_month_start_display()} {year_start_link}'
-            else:
-                result = year_start_link
-        elif not self.year_start:
-            year_finish_link = (
-                f'<a href="{self.year_finish.get_absolute_url()}">'
-                f'{self.year_finish}'
-                f'</a>'
+            result = (
+                f'{self.get_month_start_display()} - '
+                f'{self.get_month_finish_display()} '
+                f'{year_start_link}'
             )
-            if self.month_finish:
-                result = f'{self.get_month_finish_display()} {year_finish_link}'
-            else:
-                result = year_finish_link
-        elif not self.year_finish:
-            year_start_link = (
-                f'<a href="{self.year_start.get_absolute_url()}">'
-                f'{self.year_start}'
-                f'</a>'
-            )
-            if self.month_start:
-                result = f'{self.get_month_start_display()} {year_start_link}'
-            else:
-                result = year_start_link
         else:
             year_start_link = (
                 f'<a href="{self.year_start.get_absolute_url()}">'
@@ -362,23 +328,88 @@ class ReadingLog(models.Model):
                 f'{self.year_finish}'
                 f'</a>'
             )
-            if (
-                self.year_finish.year - self.year_start.year == 1 and
-                self.month_start == MonthEnum.December and
-                self.month_finish == MonthEnum.February
-            ):
-                result = f'Winter {year_start_link} - {year_finish_link}'
-            else:
-                if self.month_start:
-                    result_1 = f'{self.get_month_start_display()} {year_start_link}'
-                else:
-                    result_1 = year_start_link
-
-                if self.month_finish:
-                    result_2 = f'{self.get_month_finish_display()} {year_finish_link}'
-                else:
-                    result_2 = year_finish_link
-
-                result = f'{result_1} - {result_2}'
+            result = (
+                f'{self.get_month_start_display()} {year_start_link} - '
+                f'{self.get_month_finish_display()} {year_finish_link}'
+            )
 
         return result
+
+    # @property
+    # def period_for_template(self):
+    #     if self.year_start == self.year_finish:
+    #         year_start_link = (
+    #             f'<a href="{self.year_start.get_absolute_url()}">'
+    #             f'{self.year_start}'
+    #             f'</a>'
+    #         )
+    #         if (
+    #             self.month_start == MonthEnum.March and
+    #             self.month_finish == MonthEnum.May
+    #         ):
+    #             result = f'Spring {year_start_link}'
+    #         elif (
+    #             self.month_start == MonthEnum.June and
+    #             self.month_finish == MonthEnum.August
+    #         ):
+    #             result = f'Summer {year_start_link}'
+    #         elif (
+    #             self.month_start == MonthEnum.September and
+    #             self.month_finish == MonthEnum.November
+    #         ):
+    #             result = f'Autumn {year_start_link}'
+    #         elif self.month_start:
+    #             result = f'{self.get_month_start_display()} {year_start_link}'
+    #         else:
+    #             result = year_start_link
+    #     elif not self.year_start:
+    #         year_finish_link = (
+    #             f'<a href="{self.year_finish.get_absolute_url()}">'
+    #             f'{self.year_finish}'
+    #             f'</a>'
+    #         )
+    #         if self.month_finish:
+    #             result = f'{self.get_month_finish_display()} {year_finish_link}'
+    #         else:
+    #             result = year_finish_link
+    #     elif not self.year_finish:
+    #         year_start_link = (
+    #             f'<a href="{self.year_start.get_absolute_url()}">'
+    #             f'{self.year_start}'
+    #             f'</a>'
+    #         )
+    #         if self.month_start:
+    #             result = f'{self.get_month_start_display()} {year_start_link}'
+    #         else:
+    #             result = year_start_link
+    #     else:
+    #         year_start_link = (
+    #             f'<a href="{self.year_start.get_absolute_url()}">'
+    #             f'{self.year_start}'
+    #             f'</a>'
+    #         )
+    #         year_finish_link = (
+    #             f'<a href="{self.year_finish.get_absolute_url()}">'
+    #             f'{self.year_finish}'
+    #             f'</a>'
+    #         )
+    #         if (
+    #             self.year_finish.year - self.year_start.year == 1 and
+    #             self.month_start == MonthEnum.December and
+    #             self.month_finish == MonthEnum.February
+    #         ):
+    #             result = f'Winter {year_start_link} - {year_finish_link}'
+    #         else:
+    #             if self.month_start:
+    #                 result_1 = f'{self.get_month_start_display()} {year_start_link}'
+    #             else:
+    #                 result_1 = year_start_link
+    #
+    #             if self.month_finish:
+    #                 result_2 = f'{self.get_month_finish_display()} {year_finish_link}'
+    #             else:
+    #                 result_2 = year_finish_link
+    #
+    #             result = f'{result_1} - {result_2}'
+    #
+    #     return result
