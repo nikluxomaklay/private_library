@@ -44,9 +44,33 @@ docker compose -f docker/compose.yaml down
 
 ---
 
-### 3. Local launch without Docker
+### 3. Run with Docker and Python Debugger (debugpy)
 
-#### 3.1. Install dependencies
+This mode allows you to connect a Python debugger (e.g., from VSCode or PyCharm) to the running Django app inside the container.
+
+#### 3.1. Start the containers with debug support
+```bash
+docker compose -f docker_debug/compose.yaml up --build
+```
+
+- The Django app will be available at: http://localhost:8000/
+- The debugpy server will listen on port 5678.
+
+#### 3.2. Connect your IDE debugger
+- Host: `localhost`
+- Port: `5678`
+- Attach to the running Python process (do not launch a new one)
+
+- To stop the containers, use:
+```bash
+docker compose -f docker_debug/compose.yaml down
+```
+
+---
+
+### 4. Local launch without Docker
+
+#### 4.1. Install dependencies
 
 It is recommended to use a virtual environment:
 ```bash
@@ -56,7 +80,7 @@ venv\Scripts\activate   # for Windows
 pip install -r requirements.txt
 ```
 
-#### 3.2. Configuration
+#### 4.2. Configuration
 
 Create a `config.yml` file or use environment variables (see example in `docker/default.env`).
 
@@ -71,7 +95,7 @@ DATABASE_PASS: "your_db_password"
 DATABASE_DB: "your_db_name"
 ```
 
-#### 3.3. Apply migrations and run
+#### 4.3. Apply migrations and run
 ```bash
 python manage.py migrate
 python manage.py collectstatic --noinput
@@ -87,6 +111,7 @@ python manage.py runserver
 - `templates/` — HTML templates
 - `static/` — static files (CSS, JS, images)
 - `docker/` — files for containerization and environment setup
+- `docker_debug/` — Docker configuration for debugging with debugpy
 
 ---
 

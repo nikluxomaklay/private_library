@@ -5,7 +5,7 @@ services:
     env_file: .env
     build:
       context: ..
-      dockerfile: docker/Dockerfile
+      dockerfile: docker_debug/Dockerfile
     volumes:
       - ..:/app
     environment:
@@ -17,6 +17,9 @@ services:
       - POSTGRES_DB=${DATABASE_DB}
     depends_on:
       - db
+    ports:
+      - "8011:8000"
+      - "5678:5678"  # debugpy
 
   nginx:
     env_file: .env
