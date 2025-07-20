@@ -33,9 +33,9 @@ config = Config(config_filename)
 SECRET_KEY = config['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config['DEBUG']
+DEBUG = config.get('DEBUG', False)
 
-ALLOWED_HOSTS = config['ALLOWED_HOSTS']
+ALLOWED_HOSTS = config['ALLOWED_HOSTS'].split(' ')
 
 
 # Application definition
@@ -91,10 +91,13 @@ WSGI_APPLICATION = 'private_library.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': config['DATABASES']['ENGINE'],
+        'ENGINE': config['DATABASE_ENGINE'],
+        'HOST': config['DATABASE_HOST'],
+        'USER': config['DATABASE_USER'],
+        'PASSWORD': config['DATABASE_PASS'],
+        'NAME': config['DATABASE_DB'],
     },
 }
-DATABASES['default'].update(**config['DATABASES']['PARAMS'])
 
 
 # Password validation
@@ -132,7 +135,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = config['STATIC_ROOT']
+STATIC_ROOT = config.get('STATIC_ROOT', None)
 if STATIC_ROOT is None:
     STATIC_ROOT = Path(f'{BASE_DIR}/static/').resolve()
 
