@@ -6,9 +6,10 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 
 from core.models import Year
+from .mixins import PaginationPageSizeMixin
 
 
-class YearListView(ListView):
+class YearListView(PaginationPageSizeMixin, ListView):
     template_name = 'year/year_list.html'
     model = Year
     ordering = '-year'

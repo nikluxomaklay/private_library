@@ -8,9 +8,10 @@ from django.views.generic.list import ListView
 from dal import autocomplete
 
 from core.models import Author
+from .mixins import PaginationPageSizeMixin
 
 
-class AuthorListView(ListView):
+class AuthorListView(PaginationPageSizeMixin, ListView):
     template_name = 'author/author_list.html'
     model = Author
     ordering = 'last_name'

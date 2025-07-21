@@ -8,9 +8,10 @@ from django.views.generic.list import ListView
 from dal import autocomplete
 
 from core.models import BookSeries
+from .mixins import PaginationPageSizeMixin
 
 
-class BookSeriesListView(ListView):
+class BookSeriesListView(PaginationPageSizeMixin, ListView):
     template_name = 'book_series/book_series_list.html'
     model = BookSeries
     ordering = ('publisher__name', 'name')

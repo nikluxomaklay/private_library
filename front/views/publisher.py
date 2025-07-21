@@ -7,9 +7,10 @@ from django.views.generic.list import ListView
 from dal import autocomplete
 
 from core.models import Publisher
+from .mixins import PaginationPageSizeMixin
 
 
-class PublisherListView(ListView):
+class PublisherListView(PaginationPageSizeMixin, ListView):
     template_name = 'publisher/publisher_list.html'
     model = Publisher
     ordering = 'name'

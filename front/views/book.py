@@ -9,9 +9,10 @@ from django.views.generic.list import ListView
 
 from front.forms.book import BookForm
 from core.models import Book
+from .mixins import PaginationPageSizeMixin
 
 
-class BookListView(ListView):
+class BookListView(PaginationPageSizeMixin, ListView):
     template_name = 'book/book_list.html'
     model = Book
     ordering = 'title'
