@@ -53,4 +53,5 @@ urlpatterns = [
     path('year/<int:pk>/update/', year.YearUpdateView.as_view(), name='year_update'),
 
     path('reading-log/new/', reading_log.ReadingLogNewView.as_view(), name='reading_log_new'),
+    path('reading-log/', reading_log.ReadingLogListView.as_view(), name='reading_log_list'),
 ]
