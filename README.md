@@ -29,7 +29,7 @@ Copy the environment variables file:
 cp docker/default.env .env
 ```
 
-Edit the values in `.env` (e.g., SECRET_KEY, DATABASE_USER, DATABASE_PASS, DATABASE_DB).
+Edit the values in `.env` (e.g., SECRET_KEY, DATABASE_USER, DATABASE_PASS, DATABASE_DB, ENABLE_DJANGO_FRONTEND, STATIC_ROOT).
 
 #### 2.2. Start the containers
 ```bash
@@ -93,6 +93,8 @@ DATABASE_HOST: "localhost"
 DATABASE_USER: "your_db_user"
 DATABASE_PASS: "your_db_password"
 DATABASE_DB: "your_db_name"
+ENABLE_DJANGO_FRONTEND: 1  # 1 - enable front, 0 - disable
+STATIC_ROOT: "/app/static" # Absolute path for static files (optional)
 ```
 
 #### 4.3. Apply migrations and run

@@ -52,8 +52,10 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'private_library',
     'core',
-    'front',
 ]
+
+if config.get('ENABLE_DJANGO_FRONTEND', True) is True:
+    INSTALLED_APPS.append('front')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
