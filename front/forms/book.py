@@ -20,5 +20,6 @@ class BookForm(forms.ModelForm):
         widgets = {
             'authors': autocomplete.ModelSelect2Multiple(
                 url='author_autocomplete',
+                attrs={"data-theme": "bootstrap-5"}
             ),
         }

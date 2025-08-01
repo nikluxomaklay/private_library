@@ -18,12 +18,15 @@ class BookEditionNewForm(forms.ModelForm):
         widgets = {
             'book': autocomplete.Select2(
                 url='book_autocomplete',
+                attrs={"data-theme": "bootstrap-5"}
             ),
             'publisher': autocomplete.Select2(
                 url='publisher_autocomplete',
+                attrs={"data-theme": "bootstrap-5"}
             ),
             'series': autocomplete.Select2(
                 url='book_series_autocomplete',
+                attrs={"data-theme": "bootstrap-5"}
             ),
         }
 
@@ -47,8 +50,10 @@ class BookEditionUpdateForm(forms.ModelForm):
         widgets = {
             'publisher': autocomplete.Select2(
                 url='publisher_autocomplete',
+                attrs={"data-theme": "bootstrap-5"}
             ),
             'series': autocomplete.Select2(
                 url='book_series_autocomplete',
+                attrs={"data-theme": "bootstrap-5"}
             ),
         }

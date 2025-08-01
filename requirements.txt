@@ -1,4 +1,4 @@
-django-autocomplete-light==3.11.0
+django-autocomplete-light==3.12.1
 django-bootstrap5==24.3
 Django==5.1.1
 PyYAML==6.0.2
