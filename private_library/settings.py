@@ -36,7 +36,8 @@ SECRET_KEY = config['SECRET_KEY']
 DEBUG = config.get('DEBUG', False)
 
 ALLOWED_HOSTS = config['ALLOWED_HOSTS'].split(' ')
-
+CSRF_TRUSTED_ORIGINS = config.get('CSRF_TRUSTED_ORIGINS', config['ALLOWED_HOSTS'])
+CSRF_TRUSTED_ORIGINS = CSRF_TRUSTED_ORIGINS.split(' ')
 
 # Application definition
 
