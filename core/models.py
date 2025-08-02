@@ -241,17 +241,17 @@ class ReadingLog(models.Model):
                 result = str(self.year_start)
             else:
                 result = (
+                    f'{self.year_start} '
                     f'{self.get_month_start_display()} - '
-                    f'{self.get_month_finish_display()} '
-                    f'{self.year_start}'
+                    f'{self.get_month_finish_display()}'
                 )
         else:
             if self.month_start:
-                start_result = f'{self.get_month_start_display()} {self.year_start}'
+                start_result = f'{self.year_start} {self.get_month_start_display()}'
             else:
                 start_result = str(self.year_start)
             if self.month_finish:
-                finish_result = f'{self.get_month_finish_display()} {self.year_finish}'
+                finish_result = f'{self.year_finish} {self.get_month_finish_display()}'
             else:
                 finish_result = str(self.year_finish)
 
@@ -272,9 +272,9 @@ class ReadingLog(models.Model):
                 result = year_start_link
             else:
                 result = (
+                    f'{year_start_link} '
                     f'{self.get_month_start_display()} - '
-                    f'{self.get_month_finish_display()} '
-                    f'{year_start_link}'
+                    f'{self.get_month_finish_display()}'
                 )
         else:
             year_start_link = (
@@ -289,11 +289,11 @@ class ReadingLog(models.Model):
             )
 
             if self.month_start:
-                start_result = f'{self.get_month_start_display()} {year_start_link}'
+                start_result = f'{year_start_link} {self.get_month_start_display()}'
             else:
                 start_result = year_start_link
             if self.month_finish:
-                finish_result = f'{self.get_month_finish_display()} {year_finish_link}'
+                finish_result = f'{year_finish_link} {self.get_month_finish_display()}'
             else:
                 finish_result = year_finish_link
 
