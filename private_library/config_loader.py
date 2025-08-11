@@ -25,6 +25,7 @@ class Config(dict):
             value = os.environ[__key]
             if value in (None, '') and len(args):
                 return args[0]
+            return value
         except KeyError:
             return super().get(__key, *args)
 
