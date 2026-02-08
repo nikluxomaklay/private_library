@@ -10,9 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from pathlib import Path
-from .config_loader import Config
 from os import path
+from pathlib import Path
+
+from .config_loader import Config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_bootstrap5',
+    'django_filters',
     'private_library',
     'core',
 ]
@@ -139,12 +141,20 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = config.get('STATIC_ROOT', None)
 if STATIC_ROOT is None:
-    STATIC_ROOT = Path(f'{BASE_DIR}/static/').resolve()
+    STATIC_ROOT = str(Path(f'{BASE_DIR}/static/').resolve())
+    # STATIC_ROOT = '/home/saturnus/repos/private_library/static'
+
+STATICFILES_DIRS = [
+    str(Path(f'{BASE_DIR}/front/static/').resolve()),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Django-filter settings
+FILTERS_DEFAULT_LOOKUP_EXPR = 'icontains'
 
 LOGGING = {
     "version": 1,
