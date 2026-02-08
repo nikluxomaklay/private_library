@@ -192,6 +192,13 @@ private_library/
 - Use meaningful model and field names
 - Include proper docstrings for complex methods
 - Maintain consistent formatting
+- Adhere to the project's core principles:
+  - **Minimalism in the frontend**: Simple web page design, without special effects and complex logic
+  - **Model-First**: Every feature starts as a well-defined Django model
+  - **Admin Interface**: Expose all model functionality via Django admin
+  - **Test-First**: Write tests before implementation (TDD)
+  - **Integration Testing**: Focus on testing model relationships and inter-model communication
+  - **Observability**: Implement structured logging and follow MAJOR.MINOR.BUILD versioning
 
 ---
 
