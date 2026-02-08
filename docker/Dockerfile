@@ -9,7 +9,8 @@ COPY ./requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt gunicorn
 
 
-COPY --exclude=docker/  --exclude=docker_debug --exclude=.venv ../ .
+COPY ./entrypoint.sh .
+COPY --exclude=config.yml ./src .
 RUN chmod +x ./entrypoint.sh
 
 ENTRYPOINT ["/app/entrypoint.sh"]

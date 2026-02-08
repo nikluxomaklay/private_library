@@ -1,4 +1,3 @@
-from typing import overload
 import os
 
 from yaml import load
@@ -35,9 +34,3 @@ class Config(dict):
             return os.environ[__key]
         except KeyError:
             return super().__getitem__(__key)
-
-    def __getattr__(self, __name):
-        try:
-            return os.environ[__name]
-        except KeyError:
-            return super().__getattr__(__name)
