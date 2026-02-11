@@ -24,7 +24,7 @@ if path.exists(path.join(BASE_DIR, 'config.yml')):
 else:
     config_filename = 'default.config.yml'
 
-config = Config(config_filename)
+config = Config(str(Path(f'{BASE_DIR}/{config_filename}').resolve()))
 
 
 # Quick-start development settings - unsuitable for production
