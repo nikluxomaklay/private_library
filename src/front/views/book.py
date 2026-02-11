@@ -5,17 +5,24 @@ from django.views.generic import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import DeleteView
 from django.views.generic.edit import UpdateView
-from django.views.generic.list import ListView
+from django_filters.views import FilterView
 
 from front.forms.book import BookForm
 from core.models import Book
+from core.filters import BookFilter
 from .mixins import PaginationPageSizeMixin
 
 
-class BookListView(PaginationPageSizeMixin, ListView):
+class BookListView(PaginationPageSizeMixin, FilterView):
     template_name = 'book/book_list.html'
     model = Book
+    filterset_class = BookFilter
     ordering = 'title'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = self.filterset
+        return context
 
 
 class BookNewView(CreateView):

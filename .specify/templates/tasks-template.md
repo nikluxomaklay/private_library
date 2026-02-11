@@ -62,13 +62,12 @@ description: "Task list template for feature implementation"
 
 Examples of foundational tasks (adjust based on your project):
 
-- [ ] T004 Setup database schema and migrations framework following Model-First principle
+- [ ] T004 Setup database schema and migrations framework
 - [ ] T005 [P] Implement authentication/authorization framework
 - [ ] T006 [P] Setup API routing and middleware structure
-- [ ] T007 Create base models/entities that all stories depend on, ensuring they are self-contained and testable
-- [ ] T008 Configure error handling and structured logging infrastructure for observability
+- [ ] T007 Create base models/entities that all stories depend on
+- [ ] T008 Configure error handling and logging infrastructure
 - [ ] T009 Setup environment configuration management
-- [ ] T010 [P] Establish testing framework and ensure Test-First approach is implemented
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -151,14 +150,12 @@ Examples of foundational tasks (adjust based on your project):
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] TXXX [P] Documentation updates in docs/ ensuring all new models are properly documented
-- [ ] TXXX Code cleanup and refactoring following simplicity principle (YAGNI)
+- [ ] TXXX [P] Documentation updates in docs/
+- [ ] TXXX Code cleanup and refactoring
 - [ ] TXXX Performance optimization across all stories
-- [ ] TXXX [P] Additional unit and integration tests to ensure Test-First approach is maintained
+- [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
 - [ ] TXXX Security hardening
 - [ ] TXXX Run quickstart.md validation
-- [ ] TXXX Ensure all new functionality is accessible via Django admin interface
-- [ ] TXXX Verify structured logging is implemented consistently across all components
 
 ---
 

@@ -4,17 +4,24 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import DeleteView
 from django.views.generic.edit import UpdateView
-from django.views.generic.list import ListView
 from dal import autocomplete
+from django_filters.views import FilterView
 
 from core.models import Author
+from core.filters import AuthorFilter
 from .mixins import PaginationPageSizeMixin
 
 
-class AuthorListView(PaginationPageSizeMixin, ListView):
+class AuthorListView(PaginationPageSizeMixin, FilterView):
     template_name = 'author/author_list.html'
     model = Author
+    filterset_class = AuthorFilter
     ordering = 'last_name'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = self.filterset
+        return context
 
 
 class AuthorNewView(CreateView):

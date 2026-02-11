@@ -1,5 +1,7 @@
 {% extends "base_layout.html" %}
 
+{% load django_bootstrap5 %}
+
 {% block title %}Book editions{% endblock %}
 
 {% block content_title %}Book editions{% endblock %}
@@ -14,14 +16,53 @@
 
 {% block content %}
 <div class="container my-2 py-2 border">
+  <!-- Filter Form -->
+  <form method="get" class="mb-4">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-2">
+        {{ filter.form.book_title.label_tag }}
+        {{ filter.form.book_title }}
+      </div>
+      <div class="col-md-2">
+        {{ filter.form.author_name.label_tag }}
+        {{ filter.form.author_name }}
+      </div>
+      <div class="col-md-2">
+        {{ filter.form.publisher_name.label_tag }}
+        {{ filter.form.publisher_name }}
+      </div>
+      <div class="col-md-2">
+        {{ filter.form.publication_year.label_tag }}
+        {{ filter.form.publication_year }}
+      </div>
+      <div class="col-md-2">
+        {{ filter.form.book_series_name.label_tag }}
+        {{ filter.form.book_series_name }}
+      </div>
+      <div class="col-md-1">
+        <button type="submit" class="btn btn-primary w-100">Фильтровать</button>
+      </div>
+      <div class="col-md-1">
+        <a href="{% url 'book_edition' %}" class="btn btn-secondary w-100">Сбросить</a>
+      </div>
+    </div>
+  </form>
+
+  <!-- Pagination and Results Count -->
   <form method="get" class="mb-2 d-flex w-100 align-items-center">
     <div class="flex-grow-1">
       <label for="page_size" class="me-2">Показывать по:</label>
       <select name="page_size" id="page_size" class="form-select form-select-sm w-auto d-inline" onchange="this.form.submit()">
         {% for size in page_size_choices %}
-          <option value="{{ size }}" {% if page_size_selected == size %}selected{% endif %}>{{ size }}</option>
+          <option value="{{ size }}" {% if page_size_selected == size %}selected{% endif %}{{ size }}</option>
         {% endfor %}
       </select>
+      <!-- Preserve filter parameters -->
+      {% for key, value in request.GET.items %}
+        {% if key != 'page_size' and key != 'page' %}
+          <input type="hidden" name="{{ key }}" value="{{ value }}">
+        {% endif %}
+      {% endfor %}
       <noscript><button type="submit" class="btn btn-sm btn-secondary">OK</button></noscript>
     </div>
     {% if is_paginated %}
@@ -29,7 +70,7 @@
       <nav>
         <ul class="pagination pagination-sm mb-0">
           {% if page_obj.has_previous %}
-            <li class="page-item"><a class="page-link btn btn-sm btn-outline-secondary" href="?page={{ page_obj.previous_page_number }}&page_size={{ page_obj.paginator.per_page }}">&laquo;</a></li>
+            <li class="page-item"><a class="page-link btn btn-sm btn-outline-secondary" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}&page_size={{ page_obj.paginator.per_page }}">&laquo;</a></li>
           {% else %}
             <li class="page-item disabled"><span class="page-link btn btn-sm btn-outline-secondary">&laquo;</span></li>
           {% endif %}
@@ -37,11 +78,11 @@
             {% if page_obj.number == num %}
               <li class="page-item active"><span class="page-link btn btn-sm btn-outline-secondary">{{ num }}</span></li>
             {% else %}
-              <li class="page-item"><a class="page-link btn btn-sm btn-outline-secondary" href="?page={{ num }}&page_size={{ page_obj.paginator.per_page }}">{{ num }}</a></li>
+              <li class="page-item"><a class="page-link btn btn-sm btn-outline-secondary" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ num }}&page_size={{ page_obj.paginator.per_page }}">{{ num }}</a></li>
             {% endif %}
           {% endfor %}
           {% if page_obj.has_next %}
-            <li class="page-item"><a class="page-link btn btn-sm btn-outline-secondary" href="?page={{ page_obj.next_page_number }}&page_size={{ page_obj.paginator.per_page }}">&raquo;</a></li>
+            <li class="page-item"><a class="page-link btn btn-sm btn-outline-secondary" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}&page_size={{ page_obj.paginator.per_page }}">&raquo;</a></li>
           {% else %}
             <li class="page-item disabled"><span class="page-link btn btn-sm btn-outline-secondary">&raquo;</span></li>
           {% endif %}
@@ -50,21 +91,28 @@
     </div>
     {% endif %}
   </form>
+  
+  <!-- Results -->
   <ul>
-    {% for book_edition in page_obj %}
-    <li>
-      <a href="{% url 'book_edition_detail' pk=book_edition.pk %}">{{ book_edition.title }}</a>
-      {% if book_edition.publisher %} - <a href="{% url 'publisher_detail' pk=book_edition.publisher.pk %}">{{ book_edition.publisher }}</a>{% endif %}
-      {% if book_edition.publication_year %} - {{ book_edition.publication_year }}{% endif %}
-      {% if book_edition.series %} - (<a href="{% url 'book_series_detail' pk=book_edition.series.pk %}">"{{ book_edition.series.name }}"</a>){% endif %}
-    </li>
-    {% endfor %}
+    {% if filter.qs %}
+      {% for book_edition in page_obj %}
+      <li>
+        <a href="{% url 'book_edition_detail' pk=book_edition.pk %}">{{ book_edition.title }}</a>
+        {% if book_edition.publisher %} - <a href="{% url 'publisher_detail' pk=book_edition.publisher.pk %}">{{ book_edition.publisher }}</a>{% endif %}
+        {% if book_edition.publication_year %} - {{ book_edition.publication_year }}{% endif %}
+        {% if book_edition.series %} - (<a href="{% url 'book_series_detail' pk=book_edition.series.pk %}">"{{ book_edition.series.name }}"</a>){% endif %}
+      </li>
+      {% endfor %}
+    {% else %}
+      <li>Издание книг не найдено.</li>
+    {% endif %}
   </ul>
+  
   {% if is_paginated %}
   <nav class="d-flex justify-content-end">
     <ul class="pagination pagination-sm mb-0">
       {% if page_obj.has_previous %}
-        <li class="page-item"><a class="page-link btn btn-sm btn-outline-secondary" href="?page={{ page_obj.previous_page_number }}&page_size={{ page_obj.paginator.per_page }}">&laquo;</a></li>
+        <li class="page-item"><a class="page-link btn btn-sm btn-outline-secondary" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}&page_size={{ page_obj.paginator.per_page }}">&laquo;</a></li>
       {% else %}
         <li class="page-item disabled"><span class="page-link btn btn-sm btn-outline-secondary">&laquo;</span></li>
       {% endif %}
@@ -72,11 +120,11 @@
         {% if page_obj.number == num %}
           <li class="page-item active"><span class="page-link btn btn-sm btn-outline-secondary">{{ num }}</span></li>
         {% else %}
-          <li class="page-item"><a class="page-link btn btn-sm btn-outline-secondary" href="?page={{ num }}&page_size={{ page_obj.paginator.per_page }}">{{ num }}</a></li>
+          <li class="page-item"><a class="page-link btn btn-sm btn-outline-secondary" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ num }}&page_size={{ page_obj.paginator.per_page }}">{{ num }}</a></li>
         {% endif %}
       {% endfor %}
       {% if page_obj.has_next %}
-        <li class="page-item"><a class="page-link btn btn-sm btn-outline-secondary" href="?page={{ page_obj.next_page_number }}&page_size={{ page_obj.paginator.per_page }}">&raquo;</a></li>
+        <li class="page-item"><a class="page-link btn btn-sm btn-outline-secondary" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}&page_size={{ page_obj.paginator.per_page }}">&raquo;</a></li>
       {% else %}
         <li class="page-item disabled"><span class="page-link btn btn-sm btn-outline-secondary">&raquo;</span></li>
       {% endif %}
