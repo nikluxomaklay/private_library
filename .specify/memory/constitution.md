@@ -30,10 +30,16 @@ Text I/O ensures debuggability; Structured logging required; MAJOR.MINOR.BUILD f
 ## Development Workflow
 
 Code review requirements, testing gates, deployment approval process, etc.
+Делай новые фичи в отдельных ветках.
+Пиши документацию по-русски в стиле Google Docstring.
+Используй именованные аргументы в функциях вместо позиционных.
 
 ## Additional Constraints
 
 Technology stack requirements, compliance standards, deployment policies, etc.
+В основе приложения находится фреймворк Django.
+Для фронтенда используются Django templates + django-bootstrap5.
+Для автокомплита в селекторах используется django-autocomplete-light.
 
 ## Governance
 
