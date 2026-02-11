@@ -31,13 +31,7 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-This section verifies that the planned feature aligns with the core principles of the Private Library project:
-
-1. **Model-First**: Ensure the feature starts with well-defined Django models that are self-contained, testable, and documented.
-2. **Admin Interface**: Verify that all new models expose functionality via Django admin with standard CRUD operations.
-3. **Test-First (NON-NEGOTIABLE)**: Confirm that tests will be written before implementation following the Red-Green-Refactor cycle.
-4. **Integration Testing**: Identify areas requiring integration tests, especially for new model relationships and inter-model communication.
-5. **Observability**: Ensure structured logging is implemented and versioning follows MAJOR.MINOR.BUILD format.
+[Gates determined based on constitution file]
 
 ## Project Structure
 
