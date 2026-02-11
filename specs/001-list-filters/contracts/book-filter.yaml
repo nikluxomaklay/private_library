@@ -1,0 +1,129 @@
+# API Contract: Book List Filter Endpoint
+
+## Endpoint
+`GET /books/`
+
+## Purpose
+Retrieve a filtered list of books based on query parameters using django-filter.
+
+## Request Parameters
+
+### Query Parameters
+- `title` (optional, string, maxLength: 255)
+  - Description: Filter books by title substring (icontains lookup)
+  - Example: `?title=Django`
+
+- `author` (optional, integer)
+  - Description: Filter books by author ID
+  - Example: `?author=1`
+
+- `title_icontains` (optional, string, maxLength: 255)
+  - Description: Filter books by title with case-insensitive containment
+  - Example: `?title_icontains=django`
+
+- `publication_year` (optional, integer)
+  - Description: Filter books by exact publication year
+  - Example: `?publication_year=2022`
+
+- `publication_year__gt` (optional, integer)
+  - Description: Filter books with publication year greater than value
+  - Example: `?publication_year__gt=2020`
+
+- `publication_year__lt` (optional, integer)
+  - Description: Filter books with publication year less than value
+  - Example: `?publication_year__lt=2025`
+
+- `page` (optional, integer, minimum: 1)
+  - Description: Page number for pagination
+  - Default: 1
+
+## Response
+
+### Success Response (200 OK)
+```json
+{
+  "count": 100,
+  "next": "http://example.com/books/?page=2&title=Django",
+  "previous": null,
+  "results": [
+    {
+      "id": 1,
+      "title": "Django for Beginners",
+      "authors": [
+        {
+          "id": 1,
+          "full_name": "William S. Vincent"
+        }
+      ],
+      "publication_year": 2022
+    }
+  ]
+}
+```
+
+### Request Body Schema
+Not applicable (GET request)
+
+### Response Schema
+```yaml
+type: object
+properties:
+  count:
+    type: integer
+    description: Total number of books matching the filter
+  next:
+    type: string
+    nullable: true
+    description: URL to next page with filter parameters, null if no more pages
+  previous:
+    type: string
+    nullable: true
+    description: URL to previous page with filter parameters, null if first page
+  results:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        authors:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              full_name:
+                type: string
+        publication_year:
+          type: integer
+      required:
+        - id
+        - title
+        - authors
+```
+
+## Error Responses
+
+### 400 Bad Request
+Returned when invalid filter parameters are provided.
+
+```json
+{
+  "error": "Invalid filter parameters",
+  "details": {
+    "title": ["Ensure this field has no more than 255 characters."]
+  }
+}
+```
+
+## Security
+- Anonymous access allowed (no authentication required)
+- Input sanitization applied by django-filter to prevent injection attacks
+
+## Performance
+- Response time: <2 seconds
+- Results paginated (20 items per page by default)
+- Database indexes applied to filtered fields for optimal performance
