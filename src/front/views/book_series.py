@@ -4,17 +4,24 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import DeleteView
 from django.views.generic.edit import UpdateView
-from django.views.generic.list import ListView
+from django_filters.views import FilterView
 from dal import autocomplete
 
 from core.models import BookSeries
+from core.filters import BookSeriesFilter
 from .mixins import PaginationPageSizeMixin
 
 
-class BookSeriesListView(PaginationPageSizeMixin, ListView):
+class BookSeriesListView(PaginationPageSizeMixin, FilterView):
     template_name = 'book_series/book_series_list.html'
     model = BookSeries
+    filterset_class = BookSeriesFilter
     ordering = ('publisher__name', 'name')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = self.filterset
+        return context
 
 
 class BookSeriesNewView(CreateView):

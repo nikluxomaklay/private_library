@@ -7,6 +7,9 @@ entities in the library system according to the specification.
 
 import django_filters
 from django import forms
+from django.db import models
+
+from .enums import MonthEnum
 from .models import Book, Author, Publisher, BookSeries, ReadingLog, BookEdition
 
 
@@ -28,13 +31,6 @@ class BaseFilterSet(django_filters.FilterSet):
             if isinstance(field, django_filters.CharFilter):
                 # Add character limit validator
                 field.extra['validators'] = [self.validate_char_limit]
-                
-                # Apply sanitization if needed
-                original_method = field.field_class.clean
-                def wrapped_clean(value):
-                    sanitized_value = self.sanitize_special_chars(value)
-                    return original_method(sanitized_value)
-                field.field_class.clean = wrapped_clean
     
     def validate_char_limit(self, value):
         """Validate that text inputs do not exceed 255 characters."""
@@ -64,7 +60,7 @@ class BaseFilterSet(django_filters.FilterSet):
 class ReadingLogFilter(BaseFilterSet):
     """
     FilterSet for ReadingLog model with year/month selectors and text search.
-    
+
     Implements requirements:
     - FR-001: Year 'from' and 'to' selectors
     - FR-002: Month 'from' and 'to' selectors
@@ -75,50 +71,52 @@ class ReadingLogFilter(BaseFilterSet):
     - FR-007: Publication year exact match filter
     - FR-008: Book series name search by substring
     """
-    
-    # Year range filters
+
+    # Year range filters - these should filter the year_start and year_finish fields
     year_from = django_filters.NumberFilter(
-        field_name='publication_year',
+        field_name='year_start__year',
         lookup_expr='gte',
-        label='Год от',
+        label='Год начала от',
         widget=forms.NumberInput(attrs={
             'class': 'form-control',
-            'placeholder': 'Введите год от'
+            'placeholder': 'Введите год начала от'
         })
     )
-    
+
     year_to = django_filters.NumberFilter(
-        field_name='publication_year',
+        field_name='year_finish__year',
         lookup_expr='lte',
-        label='Год до',
+        label='Год окончания до',
         widget=forms.NumberInput(attrs={
             'class': 'form-control',
-            'placeholder': 'Введите год до'
+            'placeholder': 'Введите год окончания до'
         })
     )
-    
+
     # Month range filters
     month_from = django_filters.NumberFilter(
-        field_name='reading_date__month',
+        field_name='month_start',
         lookup_expr='gte',
-        label='Месяц от',
-        widget=forms.Select(choices=[(i, i) for i in range(1, 13)], attrs={
-            'class': 'form-control'
-        })
+        label='Месяц начала от',
+        widget=forms.Select(
+            choices=[('', '---------')] + MonthEnum.choices,
+            attrs={'class': 'form-control'}
+        )
     )
-    
+
     month_to = django_filters.NumberFilter(
-        field_name='reading_date__month',
+        field_name='month_finish',
         lookup_expr='lte',
-        label='Месяц до',
-        widget=forms.Select(choices=[(i, i) for i in range(1, 13)], attrs={
-            'class': 'form-control'
-        })
+        label='Месяц окончания до',
+        widget=forms.Select(
+            choices=[('', '---------')] + MonthEnum.choices,
+            attrs={'class': 'form-control'}
+        )
     )
-    
-    # Text search filters
+
+    # Text search filters - these need to go through the book_edition relationship
     book_title = django_filters.CharFilter(
-        field_name='book_title',
+        field_name='book_edition__book__title',
         lookup_expr='icontains',
         label='Название книги',
         max_length=255,
@@ -127,20 +125,28 @@ class ReadingLogFilter(BaseFilterSet):
             'placeholder': 'Поиск по названию книги'
         })
     )
-    
+
     author_name = django_filters.CharFilter(
-        field_name='author_name',
-        lookup_expr='icontains',
+        method='filter_reading_log_author_name',
         label='Имя автора',
-        max_length=255,
         widget=forms.TextInput(attrs={
             'class': 'form-control',
             'placeholder': 'Поиск по имени автора'
         })
     )
-    
+
+    def filter_reading_log_author_name(self, queryset, name, value):
+        """Custom filter method to search across all author name fields."""
+        if value:
+            return queryset.filter(
+                models.Q(book_edition__book__authors__first_name__icontains=value) |
+                models.Q(book_edition__book__authors__last_name__icontains=value) |
+                models.Q(book_edition__book__authors__middle_name__icontains=value)
+            )
+        return queryset
+
     publisher_name = django_filters.CharFilter(
-        field_name='publisher_name',
+        field_name='book_edition__publisher__name',
         lookup_expr='icontains',
         label='Название издательства',
         max_length=255,
@@ -149,9 +155,9 @@ class ReadingLogFilter(BaseFilterSet):
             'placeholder': 'Поиск по издательству'
         })
     )
-    
+
     publication_year = django_filters.NumberFilter(
-        field_name='publication_year',
+        field_name='book_edition__publication_year',
         lookup_expr='exact',
         label='Год публикации',
         widget=forms.NumberInput(attrs={
@@ -159,9 +165,9 @@ class ReadingLogFilter(BaseFilterSet):
             'placeholder': 'Точный год публикации'
         })
     )
-    
+
     book_series_name = django_filters.CharFilter(
-        field_name='book_series_name',
+        field_name='book_edition__series__name',
         lookup_expr='icontains',
         label='Название серии книг',
         max_length=255,
@@ -170,48 +176,53 @@ class ReadingLogFilter(BaseFilterSet):
             'placeholder': 'Поиск по названию серии'
         })
     )
-    
+
     class Meta:
         model = ReadingLog
-        fields = [
-            'book_title', 'author_name', 'publisher_name', 
-            'publication_year', 'book_series_name'
-        ]
+        fields = []
 
 
 class AuthorFilter(BaseFilterSet):
     """
     FilterSet for Author model with name search by substring.
-    
+
     Implements requirement:
     - FR-009: Author name search by substring
     """
-    
+
     full_name = django_filters.CharFilter(
-        field_name='full_name',
-        lookup_expr='icontains',
+        method='filter_author_full_name',
         label='Имя автора',
-        max_length=255,
         widget=forms.TextInput(attrs={
             'class': 'form-control',
             'placeholder': 'Поиск по имени автора'
         })
     )
-    
+
+    def filter_author_full_name(self, queryset, name, value):
+        """Custom filter method to search across all name fields."""
+        if value:
+            return queryset.filter(
+                models.Q(first_name__icontains=value) |
+                models.Q(last_name__icontains=value) |
+                models.Q(middle_name__icontains=value)
+            )
+        return queryset
+
     class Meta:
         model = Author
-        fields = ['full_name']
+        fields = []
 
 
 class BookFilter(BaseFilterSet):
     """
     FilterSet for Book model with title and author search.
-    
+
     Implements requirements:
     - FR-010: Book title search by substring
     - FR-011: Author name search by substring using django-autocomplete-light
     """
-    
+
     title = django_filters.CharFilter(
         field_name='title',
         lookup_expr='icontains',
@@ -222,19 +233,36 @@ class BookFilter(BaseFilterSet):
             'placeholder': 'Поиск по названию книги'
         })
     )
-    
-    # Note: Author filter will be implemented with django-autocomplete-light
-    # as specified in the requirements
-    
+
+    # Author name search using django-autocomplete-light
+    author_name = django_filters.CharFilter(
+        method='filter_book_author_name',
+        label='Имя автора',
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Поиск по имени автора'
+        })
+    )
+
+    def filter_book_author_name(self, queryset, name, value):
+        """Custom filter method to search across all author name fields."""
+        if value:
+            return queryset.filter(
+                models.Q(authors__first_name__icontains=value) |
+                models.Q(authors__last_name__icontains=value) |
+                models.Q(authors__middle_name__icontains=value)
+            )
+        return queryset
+
     class Meta:
         model = Book
-        fields = ['title']
+        fields = ['title', 'author_name']
 
 
 class BookEditionFilter(BaseFilterSet):
     """
     FilterSet for BookEdition model with multiple search criteria.
-    
+
     Implements requirements:
     - FR-012: Book title search by substring
     - FR-013: Author name search by substring using django-autocomplete-light
@@ -242,9 +270,10 @@ class BookEditionFilter(BaseFilterSet):
     - FR-015: Publication year exact match filter
     - FR-016: Book series name search by substring
     """
-    
+
+    # Book title search through the book relationship
     book_title = django_filters.CharFilter(
-        field_name='book_title',
+        field_name='book__title',
         lookup_expr='icontains',
         label='Название книги',
         max_length=255,
@@ -253,9 +282,30 @@ class BookEditionFilter(BaseFilterSet):
             'placeholder': 'Поиск по названию книги'
         })
     )
-    
+
+    # Author name search through the book-authors relationship
+    author_name = django_filters.CharFilter(
+        method='filter_book_edition_author_name',
+        label='Имя автора',
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Поиск по имени автора'
+        })
+    )
+
+    def filter_book_edition_author_name(self, queryset, name, value):
+        """Custom filter method to search across all author name fields."""
+        if value:
+            return queryset.filter(
+                models.Q(book__authors__first_name__icontains=value) |
+                models.Q(book__authors__last_name__icontains=value) |
+                models.Q(book__authors__middle_name__icontains=value)
+            )
+        return queryset
+
+    # Publisher name search
     publisher_name = django_filters.CharFilter(
-        field_name='publisher_name',
+        field_name='publisher__name',
         lookup_expr='icontains',
         label='Название издательства',
         max_length=255,
@@ -264,7 +314,8 @@ class BookEditionFilter(BaseFilterSet):
             'placeholder': 'Поиск по издательству'
         })
     )
-    
+
+    # Publication year exact match
     publication_year = django_filters.NumberFilter(
         field_name='publication_year',
         lookup_expr='exact',
@@ -274,9 +325,10 @@ class BookEditionFilter(BaseFilterSet):
             'placeholder': 'Точный год публикации'
         })
     )
-    
+
+    # Book series name search
     book_series_name = django_filters.CharFilter(
-        field_name='book_series_name',
+        field_name='series__name',
         lookup_expr='icontains',
         label='Название серии книг',
         max_length=255,
@@ -285,11 +337,11 @@ class BookEditionFilter(BaseFilterSet):
             'placeholder': 'Поиск по названию серии'
         })
     )
-    
+
     class Meta:
         model = BookEdition
         fields = [
-            'book_title', 'publisher_name', 
+            'book_title', 'author_name', 'publisher_name',
             'publication_year', 'book_series_name'
         ]
 

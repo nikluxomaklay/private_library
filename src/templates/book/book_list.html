@@ -1,5 +1,7 @@
 {% extends "base_layout.html" %}
 
+{% load django_bootstrap5 %}
+
 {% block title %}Books{% endblock %}
 
 {% block content_title %}Books{% endblock %}
@@ -14,6 +16,27 @@
 
 {% block content %}
 <div class="container my-2 py-2 border">
+  <!-- Filter Form -->
+  <form method="get" class="mb-4">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-4">
+        {{ filter.form.title.label_tag }}
+        {{ filter.form.title }}
+      </div>
+      <div class="col-md-4">
+        {{ filter.form.author_name.label_tag }}
+        {{ filter.form.author_name }}
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Фильтровать</button>
+      </div>
+      <div class="col-md-2">
+        <a href="{% url 'book' %}" class="btn btn-secondary w-100">Сбросить фильтры</a>
+      </div>
+    </div>
+  </form>
+
+  <!-- Pagination and Results Count -->
   <form method="get" class="mb-2 d-flex w-100 align-items-center">
     <div class="flex-grow-1">
       <label for="page_size" class="me-2">Показывать по:</label>
@@ -50,13 +73,20 @@
     </div>
     {% endif %}
   </form>
+  
+  <!-- Results -->
   <ul>
-    {% for book in page_obj %}
-    <li>
-      <a href="{% url 'book_detail' pk=book.pk %}">{{ book.title }}</a>
-    </li>
-    {% endfor %}
+    {% if filter.qs %}
+      {% for book in page_obj %}
+      <li>
+        <a href="{% url 'book_detail' pk=book.pk %}">{{ book.title }}</a>
+      </li>
+      {% endfor %}
+    {% else %}
+      <li>Книги не найдены.</li>
+    {% endif %}
   </ul>
+  
   {% if is_paginated %}
   <nav class="d-flex justify-content-end">
     <ul class="pagination pagination-sm mb-0">

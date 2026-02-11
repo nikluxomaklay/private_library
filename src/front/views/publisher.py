@@ -3,17 +3,24 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import DeleteView
 from django.views.generic.edit import UpdateView
-from django.views.generic.list import ListView
+from django_filters.views import FilterView
 from dal import autocomplete
 
 from core.models import Publisher
+from core.filters import PublisherFilter
 from .mixins import PaginationPageSizeMixin
 
 
-class PublisherListView(PaginationPageSizeMixin, ListView):
+class PublisherListView(PaginationPageSizeMixin, FilterView):
     template_name = 'publisher/publisher_list.html'
     model = Publisher
+    filterset_class = PublisherFilter
     ordering = 'name'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = self.filterset
+        return context
 
 
 class PublisherNewView(CreateView):

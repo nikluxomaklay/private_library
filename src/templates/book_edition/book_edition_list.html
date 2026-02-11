@@ -1,5 +1,7 @@
 {% extends "base_layout.html" %}
 
+{% load django_bootstrap5 %}
+
 {% block title %}Book editions{% endblock %}
 
 {% block content_title %}Book editions{% endblock %}
@@ -14,6 +16,39 @@
 
 {% block content %}
 <div class="container my-2 py-2 border">
+  <!-- Filter Form -->
+  <form method="get" class="mb-4">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-2">
+        {{ filter.form.book_title.label_tag }}
+        {{ filter.form.book_title }}
+      </div>
+      <div class="col-md-2">
+        {{ filter.form.author_name.label_tag }}
+        {{ filter.form.author_name }}
+      </div>
+      <div class="col-md-2">
+        {{ filter.form.publisher_name.label_tag }}
+        {{ filter.form.publisher_name }}
+      </div>
+      <div class="col-md-2">
+        {{ filter.form.publication_year.label_tag }}
+        {{ filter.form.publication_year }}
+      </div>
+      <div class="col-md-2">
+        {{ filter.form.book_series_name.label_tag }}
+        {{ filter.form.book_series_name }}
+      </div>
+      <div class="col-md-1">
+        <button type="submit" class="btn btn-primary w-100">Фильтровать</button>
+      </div>
+      <div class="col-md-1">
+        <a href="{% url 'book_edition' %}" class="btn btn-secondary w-100">Сбросить</a>
+      </div>
+    </div>
+  </form>
+
+  <!-- Pagination and Results Count -->
   <form method="get" class="mb-2 d-flex w-100 align-items-center">
     <div class="flex-grow-1">
       <label for="page_size" class="me-2">Показывать по:</label>
@@ -50,16 +85,23 @@
     </div>
     {% endif %}
   </form>
+  
+  <!-- Results -->
   <ul>
-    {% for book_edition in page_obj %}
-    <li>
-      <a href="{% url 'book_edition_detail' pk=book_edition.pk %}">{{ book_edition.title }}</a>
-      {% if book_edition.publisher %} - <a href="{% url 'publisher_detail' pk=book_edition.publisher.pk %}">{{ book_edition.publisher }}</a>{% endif %}
-      {% if book_edition.publication_year %} - {{ book_edition.publication_year }}{% endif %}
-      {% if book_edition.series %} - (<a href="{% url 'book_series_detail' pk=book_edition.series.pk %}">"{{ book_edition.series.name }}"</a>){% endif %}
-    </li>
-    {% endfor %}
+    {% if filter.qs %}
+      {% for book_edition in page_obj %}
+      <li>
+        <a href="{% url 'book_edition_detail' pk=book_edition.pk %}">{{ book_edition.title }}</a>
+        {% if book_edition.publisher %} - <a href="{% url 'publisher_detail' pk=book_edition.publisher.pk %}">{{ book_edition.publisher }}</a>{% endif %}
+        {% if book_edition.publication_year %} - {{ book_edition.publication_year }}{% endif %}
+        {% if book_edition.series %} - (<a href="{% url 'book_series_detail' pk=book_edition.series.pk %}">"{{ book_edition.series.name }}"</a>){% endif %}
+      </li>
+      {% endfor %}
+    {% else %}
+      <li>Издание книг не найдено.</li>
+    {% endif %}
   </ul>
+  
   {% if is_paginated %}
   <nav class="d-flex justify-content-end">
     <ul class="pagination pagination-sm mb-0">
