@@ -140,7 +140,6 @@ STATIC_URL = 'static/'
 STATIC_ROOT = config.get('STATIC_ROOT', None)
 if STATIC_ROOT is None:
     STATIC_ROOT = str(Path(f'{BASE_DIR}/static/').resolve())
-    # STATIC_ROOT = '/home/saturnus/repos/private_library/static'
 
 STATICFILES_DIRS = [
     str(Path(f'{BASE_DIR}/front/static/').resolve()),
