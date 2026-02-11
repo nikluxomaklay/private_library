@@ -23,17 +23,17 @@ Each user story can be implemented in parallel after foundational tasks are comp
 
 ## Phase 1: Setup
 
-- [ ] T001 Install django-filter dependency in requirements.txt
-- [ ] T002 Create filters.py file in books app to house all FilterSet classes
-- [ ] T003 Create base template for filter forms that matches existing content addition page styling
+- [X] T001 Install django-filter dependency in requirements.txt
+- [X] T002 Create filters.py file in books app to house all FilterSet classes
+- [X] T003 Create base template for filter forms that matches existing content addition page styling
 
 ## Phase 2: Foundational Tasks
 
-- [ ] T010 Add database indexes to filtered fields as per data model specification
-- [ ] T011 Create base FilterSet class with common functionality for special character sanitization
-- [ ] T012 Implement character limit validation (255 chars) for all text-based filters
-- [ ] T013 Create common template components for filter forms with bootstrap styling
-- [ ] T014 Add clear filters functionality to reset all applied filters with single action
+- [X] T010 Add database indexes to filtered fields as per data model specification
+- [X] T011 Create base FilterSet class with common functionality for special character sanitization
+- [X] T012 Implement character limit validation (255 chars) for all text-based filters
+- [X] T013 Create common template components for filter forms with bootstrap styling
+- [X] T014 Add clear filters functionality to reset all applied filters with single action
 
 ## Phase 3: User Story 1 - Filter Reading Log Entries (Priority: P1)
 

@@ -5,7 +5,7 @@ from core.enums import MonthEnum
 
 
 class Book(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, db_index=True)  # For filtering
     extended_title = models.CharField(
         max_length=200,
         null=True, blank=True,
@@ -40,7 +40,7 @@ class Book(models.Model):
 
 class Author(models.Model):
     first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50, db_index=True)  # For filtering
     middle_name = models.CharField(
         max_length=50,
         null=True, blank=True,
@@ -112,7 +112,7 @@ class BookEdition(models.Model):
         related_name='book_editions',
         null=True, blank=True,
     )
-    publication_year = models.PositiveSmallIntegerField(null=True, blank=True)
+    publication_year = models.PositiveSmallIntegerField(null=True, blank=True, db_index=True)  # For filtering
     isbn = models.CharField(
         max_length=20,
         null=True, blank=True,
@@ -162,7 +162,7 @@ class BookEdition(models.Model):
 
 
 class Publisher(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, db_index=True)  # For filtering
 
     def __str__(self):
         return self.name
@@ -172,7 +172,7 @@ class Publisher(models.Model):
 
 
 class BookSeries(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, db_index=True)  # For filtering
     publisher = models.ForeignKey(
         'Publisher',
         on_delete=models.PROTECT,
@@ -216,6 +216,7 @@ class ReadingLog(models.Model):
     month_start = models.IntegerField(
         choices=MonthEnum.choices,
         null=True, blank=True,
+        db_index=True  # For filtering
     )
     year_finish = models.ForeignKey(
         'Year',
@@ -226,6 +227,7 @@ class ReadingLog(models.Model):
     month_finish = models.IntegerField(
         choices=MonthEnum.choices,
         null=True, blank=True,
+        db_index=True  # For filtering
     )
 
     def __str__(self):

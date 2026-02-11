@@ -1,0 +1,34 @@
+<!-- Базовый шаблон для форм фильтров -->
+<form method="GET" class="mb-4 filter-form">
+    <div class="row">
+        {% for field in filter.form %}
+            <div class="col-md-4 mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {{ field }}
+            </div>
+        {% endfor %}
+        <div class="col-md-4 mb-3 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary me-2">Фильтровать</button>
+            <a href="{{ request.get_full_path }}" class="btn btn-secondary" onclick="resetFilters(event)">Очистить фильтры</a>
+        </div>
+    </div>
+</form>
+
+<script>
+function resetFilters(event) {
+    event.preventDefault();
+    // Получаем текущий URL без параметров фильтрации
+    const currentPath = window.location.pathname;
+    // Перенаправляем на тот же путь без GET-параметров
+    window.location.href = currentPath;
+}
+</script>
+
+<style>
+.filter-form {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+}
+</style>
