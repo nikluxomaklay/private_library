@@ -24,9 +24,10 @@
 
 ## Phase 2: Foundational
 
-- [ ] T004 [P] Update BookEdition model with edition_type CharField
-- [ ] T005 [P] Create and run migration for edition_type field
-- [ ] T006 [P] Define constants for edition types in models.py
+- [X] T004 [P] Update BookEdition model with edition_type CharField
+- [X] T005 [P] Create and run migration for edition_type field
+- [X] T006 [P] Define constants for edition types in models.py
+- [X] T007 [P] Add data migration to fill existing book editions with default type
 
 ## Phase 3: User Story 1 - Add book edition type during creation (Priority: P1)
 
@@ -38,13 +39,13 @@
 1. Given user is on the book edition creation page, When user selects a book edition type and submits the form, Then the book edition is saved with the selected type
 2. Given user is on the book edition creation page, When user does not select a book edition type, Then the system defaults to 'Paper Book' type
 
-- [ ] T007 [US1] Update BookEditionForm to include edition_type dropdown
-- [ ] T008 [US1] Add validation to ensure edition_type is required during creation
-- [ ] T009 [US1] Set default value to 'PAPER_BOOK' in form
-- [ ] T010 [US1] Update interface to show edition_type field in creation form
-- [ ] T011 [US1] Make edition_type field read-only in change form (immutability)
-- [ ] T012 [US1] Test creating book edition with specific type
-- [ ] T013 [US1] Test creating book edition without specifying type (should default)
+- [X] T008 [US1] Update BookEditionForm to include edition_type dropdown
+- [X] T009 [US1] Add validation to ensure edition_type is required during creation
+- [X] T010 [US1] Set default value to 'PAPER_BOOK' in form
+- [X] T011 [US1] Update interface to show edition_type field in creation form
+- [X] T012 [US1] Make edition_type field read-only in change form (immutability)
+- [X] T013 [US1] Test creating book edition with specific type
+- [X] T014 [US1] Test creating book edition without specifying type (should default)
 
 ## Phase 4: User Story 2 - View book edition type in list view (Priority: P2)
 
@@ -55,10 +56,10 @@
 **Acceptance Scenarios**:
 1. Given user is viewing the book edition list, When book editions are displayed, Then each entry shows the appropriate icon representing its type (📖 for Paper Book, 📄 for E-book, 🎙️ for Audiobook, 🌐 for Web Page)
 
-- [ ] T014 [US2] Update book list template to display edition type as Unicode icon
-- [ ] T015 [US2] Create helper function to map edition type to Unicode icon
-- [ ] T016 [US2] Test that icons appear correctly in list view for each type
-- [ ] T017 [US2] Verify styling is consistent with existing elements
+- [X] T015 [US2] Update book list template to display edition type as Unicode icon
+- [X] T016 [US2] Create helper function to map edition type to Unicode icon
+- [X] T017 [US2] Test that icons appear correctly in list view for each type
+- [X] T018 [US2] Verify styling is consistent with existing elements
 
 ## Phase 5: User Story 3 - View book edition type in detail view (Priority: P3)
 
@@ -69,17 +70,17 @@
 **Acceptance Scenarios**:
 1. Given user is viewing a book edition detail page, When the page loads, Then the book edition type is displayed as readable text alongside other book properties
 
-- [ ] T018 [US3] Update book detail template to display edition type as text
-- [ ] T019 [US3] Test that edition type appears correctly in detail view
-- [ ] T020 [US3] Verify styling is consistent with other property displays
+- [X] T019 [US3] Update book detail template to display edition type as text
+- [X] T020 [US3] Test that edition type appears correctly in detail view
+- [X] T021 [US3] Verify styling is consistent with other property displays
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T021 Update documentation to reflect new functionality
-- [ ] T022 Run all tests to ensure no regressions
-- [ ] T023 Verify interface works correctly with new field
-- [ ] T024 Perform manual testing of all functionality
-- [ ] T025 Clean up any temporary code or debugging statements
+- [X] T022 Update documentation to reflect new functionality
+- [X] T023 Run all tests to ensure no regressions
+- [X] T024 Verify interface works correctly with new field
+- [X] T025 Perform manual testing of all functionality
+- [X] T026 Clean up any temporary code or debugging statements
 
 ## Dependencies
 
