@@ -94,6 +94,14 @@ class Author(models.Model):
 
 
 class BookEdition(models.Model):
+    # Define the choices for book edition types
+    EDITION_TYPE_CHOICES = [
+        ('PAPER_BOOK', 'Paper Book'),
+        ('EBOOK', 'E-book'),
+        ('AUDIOBOOK', 'Audiobook'),
+        ('WEBPAGE', 'Web Page'),
+    ]
+    
     book = models.ForeignKey(
         'Book',
         on_delete=models.PROTECT,
@@ -116,6 +124,13 @@ class BookEdition(models.Model):
     isbn = models.CharField(
         max_length=20,
         null=True, blank=True,
+    )
+    edition_type = models.CharField(
+        max_length=20,
+        choices=EDITION_TYPE_CHOICES,
+        default='PAPER_BOOK',
+        help_text="Type of book edition",
+        null=False, blank=False,  # Required field
     )
 
     def __str__(self):

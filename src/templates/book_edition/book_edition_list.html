@@ -1,6 +1,7 @@
 {% extends "base_layout.html" %}
 
 {% load django_bootstrap5 %}
+{% load edition_tags %}
 
 {% block title %}Book editions{% endblock %}
 
@@ -101,6 +102,7 @@
         {% if book_edition.publisher %} - <a href="{% url 'publisher_detail' pk=book_edition.publisher.pk %}">{{ book_edition.publisher }}</a>{% endif %}
         {% if book_edition.publication_year %} - {{ book_edition.publication_year }}{% endif %}
         {% if book_edition.series %} - (<a href="{% url 'book_series_detail' pk=book_edition.series.pk %}">"{{ book_edition.series.name }}"</a>){% endif %}
+        {% if book_edition.edition_type %} - {% edition_type_icon book_edition.edition_type %}{% endif %}
       </li>
       {% endfor %}
     {% else %}

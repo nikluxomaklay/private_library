@@ -1,5 +1,7 @@
 {% extends "book_edition/book_edition_new.html" %}
 
+{% load edition_tags %}
+
 {% block title %}Book edition {{ object }}{% endblock %}
 {% block content_title %}Book edition {{ object }}{% endblock %}
 
@@ -24,6 +26,7 @@
     <li>Book: <a href="{{ object.book.get_absolute_url }}">{{ object.title }}</a></li>
     <li>Publisher: {% if object.publisher %}<a href="{{ object.publisher.get_absolute_url }}">{{ object.publisher }}</a>{% endif %}</li>
     <li>Series: {% if object.series %}<a href="{{ object.series.get_absolute_url }}">{{ object.series }}</a>{% endif %}</li>
+    <li>Edition Type: {% edition_type_display object.edition_type %}</li>
   </ul>
   <span>Authors:</span>
   <ul>
