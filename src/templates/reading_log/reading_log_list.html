@@ -14,60 +14,65 @@
 </div>
 {% endblock %}
 
-{% block content %}
-<div class="container my-2 py-2 border">
-  <!-- Filter Form -->
+{% block filters %}
+<div class="container my-2 py-2 border justify-content-end">
   <form method="get" class="mb-4">
     <div class="row g-3 align-items-end">
-      <div class="col-md-2">
+      <div class="col-md-4">
         {{ filter.form.year_from.label_tag }}
         {{ filter.form.year_from }}
       </div>
-      <div class="col-md-2">
+      <div class="col-md-4">
         {{ filter.form.year_to.label_tag }}
         {{ filter.form.year_to }}
       </div>
-      <div class="col-md-2">
+      <div class="col-md-4">
+        {{ filter.form.book_title.label_tag }}
+        {{ filter.form.book_title }}
+      </div>
+    </div>
+    <div class="row g-3 mt-2 align-items-end">
+      <div class="col-md-4">
         {{ filter.form.month_from.label_tag }}
         {{ filter.form.month_from }}
       </div>
-      <div class="col-md-2">
+      <div class="col-md-4">
         {{ filter.form.month_to.label_tag }}
         {{ filter.form.month_to }}
       </div>
       <div class="col-md-4">
-        <button type="submit" class="btn btn-primary w-100">Фильтровать</button>
-      </div>
-    </div>
-    <div class="row g-3 mt-2">
-      <div class="col-md-3">
-        {{ filter.form.book_title.label_tag }}
-        {{ filter.form.book_title }}
-      </div>
-      <div class="col-md-3">
         {{ filter.form.author_name.label_tag }}
         {{ filter.form.author_name }}
       </div>
-      <div class="col-md-2">
+    </div>
+    <div class="row g-3 mt-2">
+      <div class="col-md-4">
         {{ filter.form.publisher_name.label_tag }}
         {{ filter.form.publisher_name }}
       </div>
-      <div class="col-md-2">
+      <div class="col-md-4">
         {{ filter.form.publication_year.label_tag }}
         {{ filter.form.publication_year }}
       </div>
-      <div class="col-md-2">
+      <div class="col-md-4">
         {{ filter.form.book_series_name.label_tag }}
         {{ filter.form.book_series_name }}
       </div>
     </div>
     <div class="row g-3 mt-2">
-      <div class="col-md-12">
-        <a href="{% url 'reading_log_list' %}" class="btn btn-secondary">Сбросить фильтры</a>
+      <div class="col-md-4">
+        <button type="submit" class="btn btn-primary w-100">Фильтровать</button>
+      </div>
+      <div class="col-md-4">
+        <a href="{% url 'reading_log_list' %}" class="btn btn-secondary w-100">Сбросить фильтры</a>
       </div>
     </div>
   </form>
+</div>
+{% endblock %}
 
+{% block content %}
+<div class="container my-2 py-2 border">
   <!-- Pagination and Results Count -->
   <form method="get" class="mb-2 d-flex w-100 align-items-center">
     <div class="flex-grow-1">

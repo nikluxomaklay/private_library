@@ -14,28 +14,33 @@
 </div>
 {% endblock %}
 
+{% block filters %}
+<div class="container my-2 py-2 border justify-content-end">
+    <form method="get" class="mb-4">
+        <div class="row g-3 align-items-end">
+          <div class="col-md-4">
+            {{ filter.form.title.label_tag }}
+            {{ filter.form.title }}
+          </div>
+          <div class="col-md-4">
+            {{ filter.form.author_name.label_tag }}
+            {{ filter.form.author_name }}
+          </div>
+        </div>
+        <div class="row g-3 mt-2">
+          <div class="col-md-4">
+            <button type="submit" class="btn btn-primary w-100">Фильтровать</button>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'book' %}" class="btn btn-secondary w-100">Сбросить фильтры</a>
+          </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
 {% block content %}
 <div class="container my-2 py-2 border">
-  <!-- Filter Form -->
-  <form method="get" class="mb-4">
-    <div class="row g-3 align-items-end">
-      <div class="col-md-4">
-        {{ filter.form.title.label_tag }}
-        {{ filter.form.title }}
-      </div>
-      <div class="col-md-4">
-        {{ filter.form.author_name.label_tag }}
-        {{ filter.form.author_name }}
-      </div>
-      <div class="col-md-2">
-        <button type="submit" class="btn btn-primary w-100">Фильтровать</button>
-      </div>
-      <div class="col-md-2">
-        <a href="{% url 'book' %}" class="btn btn-secondary w-100">Сбросить фильтры</a>
-      </div>
-    </div>
-  </form>
-
   <!-- Pagination and Results Count -->
   <form method="get" class="mb-2 d-flex w-100 align-items-center">
     <div class="flex-grow-1">

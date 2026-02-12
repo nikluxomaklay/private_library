@@ -76,7 +76,7 @@ class ReadingLogFilter(BaseFilterSet):
     year_from = django_filters.NumberFilter(
         field_name='year_start__year',
         lookup_expr='gte',
-        label='Год начала от',
+        label='Год начала',
         widget=forms.NumberInput(attrs={
             'class': 'form-control',
             'placeholder': 'Введите год начала от'
@@ -86,7 +86,7 @@ class ReadingLogFilter(BaseFilterSet):
     year_to = django_filters.NumberFilter(
         field_name='year_finish__year',
         lookup_expr='lte',
-        label='Год окончания до',
+        label='Год окончания',
         widget=forms.NumberInput(attrs={
             'class': 'form-control',
             'placeholder': 'Введите год окончания до'
@@ -97,7 +97,7 @@ class ReadingLogFilter(BaseFilterSet):
     month_from = django_filters.NumberFilter(
         field_name='month_start',
         lookup_expr='gte',
-        label='Месяц начала от',
+        label='Месяц начала',
         widget=forms.Select(
             choices=[('', '---------')] + MonthEnum.choices,
             attrs={'class': 'form-control'}
@@ -107,7 +107,7 @@ class ReadingLogFilter(BaseFilterSet):
     month_to = django_filters.NumberFilter(
         field_name='month_finish',
         lookup_expr='lte',
-        label='Месяц окончания до',
+        label='Месяц окончания',
         widget=forms.Select(
             choices=[('', '---------')] + MonthEnum.choices,
             attrs={'class': 'form-control'}

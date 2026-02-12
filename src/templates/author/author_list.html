@@ -14,15 +14,16 @@
 </div>
 {% endblock %}
 
-{% block content %}
-<div class="container my-2 py-2 border">
-  <!-- Filter Form -->
-  <form method="get" class="mb-4">
+{% block filters %}
+<div class="container my-2 py-2 border justify-content-end">
+    <form method="get" class="mb-4">
     <div class="row g-3 align-items-end">
       <div class="col-md-4">
         {{ filter.form.full_name.label_tag }}
         {{ filter.form.full_name }}
       </div>
+    </div>
+    <div class="row g-3 mt-2">
       <div class="col-md-4">
         <button type="submit" class="btn btn-primary w-100">Фильтровать</button>
       </div>
@@ -31,7 +32,11 @@
       </div>
     </div>
   </form>
+</div>
+{% endblock %}
 
+{% block content %}
+<div class="container my-2 py-2 border">
   <!-- Pagination and Results Count -->
   <form method="get" class="mb-2 d-flex w-100 align-items-center">
     <div class="flex-grow-1">
