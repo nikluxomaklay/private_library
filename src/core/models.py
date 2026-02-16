@@ -1,7 +1,8 @@
-from django.db import models
+from django.db import models, transaction
 from django.urls import reverse
 
 from core.enums import MonthEnum
+from core.helpers import generate_note_number
 
 
 class Book(models.Model):
@@ -317,3 +318,38 @@ class ReadingLog(models.Model):
             result = f'{start_result} - {finish_result}'
 
         return result
+
+
+class KeyWord(models.Model):
+    word = models.CharField(max_length=255, null=False, blank=False)
+
+    def __str__(self):
+        return self.word
+
+
+class Note(models.Model):
+    index = models.TextField(db_index=True, unique=True)
+    book_edition = models.ForeignKey(
+        'BookEdition',
+        on_delete=models.PROTECT,
+        related_name='notes',
+        null=True, blank=True,
+    )
+    book_edition_additional_info = models.TextField(null=True, blank=True)
+    parent = models.ForeignKey('self', on_delete=models.PROTECT, null=True, blank=True)
+    related_notes = models.ManyToManyField('self')
+    keywords = models.ManyToManyField('KeyWord', related_name='notes')
+    topic = models.CharField(max_length=255, null=False, blank=False)
+    text = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.index} {self.topic}'
+
+    def save_base(self, *args, **kwargs):
+        if not self.index:
+            query = Note.objects.select_for_update().all()
+            with transaction.atomic():
+                self.index = generate_note_number(self, query)
+        super().save_base(*args, **kwargs)
