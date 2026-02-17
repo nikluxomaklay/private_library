@@ -329,13 +329,6 @@ class KeyWord(models.Model):
 
 class Note(models.Model):
     index = models.TextField(db_index=True, unique=True)
-    book_edition = models.ForeignKey(
-        'BookEdition',
-        on_delete=models.PROTECT,
-        related_name='notes',
-        null=True, blank=True,
-    )
-    book_edition_additional_info = models.TextField(null=True, blank=True)
     parent = models.ForeignKey('self', on_delete=models.PROTECT, null=True, blank=True)
     related_notes = models.ManyToManyField('self')
     keywords = models.ManyToManyField('KeyWord', related_name='notes')
@@ -353,3 +346,13 @@ class Note(models.Model):
             with transaction.atomic():
                 self.index = generate_note_number(self, query)
         super().save_base(*args, **kwargs)
+
+
+class NoteToBookEdition(models.Model):
+    note = models.ForeignKey('Note', on_delete=models.PROTECT, related_name='book_editions')
+    book_edition = models.ForeignKey(
+        'BookEdition',
+        on_delete=models.PROTECT,
+        related_name='notes',
+    )
+    additional_info = models.TextField(null=True, blank=True)
