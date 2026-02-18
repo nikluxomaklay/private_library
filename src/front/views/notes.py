@@ -342,7 +342,7 @@ class NoteAutocompleteView(autocomplete.Select2QuerySetView):
 
         Если есть поисковый запрос (self.q), фильтрует по topic или index.
         """
-        qs = Note.objects.all()
+        qs = Note.objects.order_by('-created_at').all()
         if self.q:
             qs = qs.filter(
                 Q(topic__istartswith=self.q) |
@@ -364,7 +364,7 @@ class KeyWordAutocompleteView(autocomplete.Select2QuerySetView):
 
         Если есть поисковый запрос (self.q), фильтрует по word.
         """
-        qs = KeyWord.objects.all()
+        qs = KeyWord.objects.order_by('word').all()
         if self.q:
             qs = qs.filter(
                 Q(word__istartswith=self.q)
