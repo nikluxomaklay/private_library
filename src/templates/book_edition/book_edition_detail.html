@@ -9,6 +9,9 @@
 {% block actions %}
 <div class="container my-2 py-2 border justify-content-end">
   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <a href="{% url 'note_new' %}?book_edition={{ object.pk }}" class="btn btn-primary btn-sm">
+      New note
+    </a>
     <form action="{% url 'reading_log_new' %}" method="GET">
       {% csrf_token %}
       <input type="hidden" name="book_edition" value="{{ object.pk }}">
@@ -47,5 +50,31 @@
     {% endfor %}
     {% endautoescape %}
   </ul>
+</div>
+{% endblock %}
+
+{% block content_bottom %}
+<div class="container my-2 py-2 border">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>Связанные заметки</h4>
+        <a href="{% url 'note_new' %}?book_edition={{ object.pk }}" class="btn btn-primary btn-sm">
+          New note
+        </a>
+      </div>
+      {% if notes %}
+      <ul class="list-unstyled">
+        {% for note in notes %}
+{#          {% if not note.parent %}#}
+            {% include 'notes/_note_tree_readonly.html' with note=note level=0 %}
+{#          {% endif %}#}
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="text-muted">Нет связанных заметок</p>
+      {% endif %}
+    </div>
+  </div>
 </div>
 {% endblock %}

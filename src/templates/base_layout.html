@@ -8,8 +8,12 @@
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}Title{% endblock %}</title>
+  {% block extra_head %}{% endblock %}
 </head>
 <body>
+  <!-- jQuery (required for django-autocomplete-light and select2) -->
+{#  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>#}
+  
   <div class="container-fluid py-4">
     <div class="row border py-2">
       <h3>{% block content_title %}{% endblock %}</h3>
@@ -27,6 +31,7 @@
               <li><a href="{% url 'year' %}">Years</a></li>
               <li><a href="{% url 'publisher' %}">Publishers</a></li>
               <li><a href="{% url 'book_series' %}">Book series</a></li>
+              <li><a href="{% url 'note' %}">Notes</a></li>
             </ul>
           </div>
         </nav>
@@ -35,9 +40,12 @@
         {% block actions %}{% endblock %}
         {% block filters %}{% endblock %}
         {% block content %}{% endblock %}
+        {% block content_bottom %}{% endblock %}
       </div>
     </div>
   </div>
+
+  {% block extra_js %}{% endblock %}
 </body>
 <style>
 .select2-selection--single {

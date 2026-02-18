@@ -329,7 +329,14 @@ class KeyWord(models.Model):
 
 class Note(models.Model):
     index = models.TextField(db_index=True, unique=True)
-    parent = models.ForeignKey('self', on_delete=models.PROTECT, null=True, blank=True)
+    root = models.ForeignKey('self', on_delete=models.PROTECT, null=True, blank=True, related_name='descendants')
+    parent = models.ForeignKey(
+        'self',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name='children'
+    )
     related_notes = models.ManyToManyField('self')
     keywords = models.ManyToManyField('KeyWord', related_name='notes')
     topic = models.CharField(max_length=255, null=False, blank=False)
@@ -345,6 +352,11 @@ class Note(models.Model):
             query = Note.objects.select_for_update().all()
             with transaction.atomic():
                 self.index = generate_note_number(self, query)
+                if self.parent_id:
+                    parent = Note.objects.get(id=self.parent_id)
+                    self.root = parent.root
+                else:
+                    self.root = None
         super().save_base(*args, **kwargs)
 
 

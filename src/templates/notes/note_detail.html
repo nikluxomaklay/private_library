@@ -1,0 +1,126 @@
+{% extends "base_layout.html" %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}{{ object.index }} {{ object.topic }}{% endblock %}
+
+{% block content_title %}Заметка {{ object.index }}{% endblock %}
+
+{% block actions %}
+    <div class="container my-2 py-2 border justify-content-end">
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <form action="{% url 'note' %}" method="GET">{% csrf_token %}<button type="submit" class="btn btn-secondary btn-sm">&larr; Назад к списку заметок</button></form>
+      </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="container my-2 py-2 border">
+
+  <!-- Основная информация -->
+  <div class="row justify-content-left border-bottom pb-2">
+    <div class="col-6">
+      <h4 class="mb-0">{{ object.topic }}</h4>
+    </div>
+  </div>
+  <div class="row justify-content-left">
+    <div class="col-6">
+      <!-- Текст заметки -->
+      {% if object.text %}
+        <div class="mb-4">
+          <p class="card-text">{{ object.text|linebreaks }}</p>
+        </div>
+      {% endif %}
+
+      <!-- Родительская заметка -->
+      {% if object.parent %}
+        <div class="mb-3">
+          <h5 class="text-muted">Родительская заметка</h5>
+          <p class="mb-0">
+            <a href="{% url 'note_detail' pk=object.parent.pk %}">
+              {{ object.parent.index }} {{ object.parent.topic }}
+            </a>
+          </p>
+        </div>
+      {% endif %}
+
+      <!-- Книжные издания -->
+      {% if object.book_editions.all %}
+        <div class="mb-3">
+          <h5 class="text-muted">Связанные книжные издания</h5>
+          <ul class="list-group">
+            {% for note_to_book in object.book_editions.all %}
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-md-8">
+                    <a href="{% url 'book_edition_detail' pk=note_to_book.book_edition.pk %}">
+                      {{ note_to_book.book_edition.title }}
+                    </a>
+                    {% if note_to_book.book_edition.publisher %}
+                      - {{ note_to_book.book_edition.publisher }}
+                    {% endif %}
+                    {% if note_to_book.book_edition.publication_year %}
+                      ({{ note_to_book.book_edition.publication_year }})
+                    {% endif %}
+                  </div>
+                  {% if note_to_book.additional_info %}
+                    <div class="col-md-4 text-muted small">
+                      <em>{{ note_to_book.additional_info }}</em>
+                    </div>
+                  {% endif %}
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      <!-- Ключевые слова -->
+      {% if object.keywords.all %}
+        <div class="mb-3">
+          <h5 class="text-muted">Ключевые слова</h5>
+          <div class="d-flex flex-wrap gap-2">
+            {% for keyword in object.keywords.all %}
+              <span class="badge bg-primary">{{ keyword.word }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      <!-- Связанные заметки -->
+      {% if object.related_notes.all %}
+        <div class="mb-3">
+          <h5 class="text-muted">Связанные заметки</h5>
+          <ul class="list-group">
+            {% for related in object.related_notes.all %}
+              <li class="list-group-item">
+                <a href="{% url 'note_detail' pk=related.pk %}">
+                  {{ related.index }} {{ related.topic }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      <!-- Даты создания и обновления -->
+      <div class="mt-4 pt-3 border-top">
+        <p class="text-muted mb-0">
+          <small>
+            Создано: {{ object.created_at|date:"d.m.Y H:i" }} |
+            Обновлено: {{ object.updated_at|date:"d.m.Y H:i" }}
+          </small>
+        </p>
+      </div>
+
+      <!-- Кнопки действий -->
+      <div class="mt-4 pt-3 border-top d-flex gap-2">
+        <a href="{% url 'note_update' object.pk %}" class="btn btn-primary">Редактировать</a>
+        <a href="{% url 'note_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+        <a href="{% url 'note_new' %}?parent={{ object.pk }}" class="btn btn-secondary">New note from this</a>
+        <a href="{% url 'note' %}" class="btn btn-secondary">Назад к списку</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

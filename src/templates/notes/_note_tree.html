@@ -1,0 +1,28 @@
+{% load django_bootstrap5 %}
+{% load basic_tags %}
+
+<li class="note-item {% if note.children.exists %}has-children{% endif %}" style="{% if level > 0 %}margin-left: {{ level|multiply:10 }}px;{% endif %}">
+  <div class="note-row py-0 {% if level > 0 %}border-start{% endif %}">
+    <div class="row">
+      <div class="col-10">
+        <a href="{% url 'note_detail' pk=note.pk %}" class="text-decoration-none">{{ note.index }}</a>
+        <span class="note-topic">{{ note.topic }}</span>
+        {% if note.text %}
+          <span class="text-muted small">{{ note.text|truncatewords:10 }}...</span>
+        {% endif %}
+      </div>
+      <div class="col-2 text-end">
+        <small class="text-muted">{{ note.updated_at|date:"d.m.Y" }}</small>
+      </div>
+    </div>
+  </div>
+
+  {# Рекурсивный вызов для дочерних заметок #}
+  {% if note.children.exists %}
+    <ul class="note-children list-unstyled">
+      {% for child in note.children.all %}
+        {% include 'notes/_note_tree.html' with note=child level=level|add:1 %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+</li>

@@ -5,6 +5,7 @@ from front.views import book
 from front.views import book_edition
 from front.views import book_series
 from front.views import index
+from front.views import notes
 from front.views import publisher
 from front.views import reading_log
 from front.views import year
@@ -31,6 +32,7 @@ urlpatterns = [
     path('book-edition/<int:pk>/', book_edition.BookEditionDetailView.as_view(), name='book_edition_detail'),
     path('book-edition/<int:pk>/delete/', book_edition.BookEditionDeleteView.as_view(), name='book_edition_delete'),
     path('book-edition/<int:pk>/update/', book_edition.BookEditionUpdateView.as_view(), name='book_edition_update'),
+    path('book-edition/autocomplete/', book_edition.BookEditionAutocompleteView.as_view(), name='book_edition_autocomplete'),
 
     path('book-series/', book_series.BookSeriesListView.as_view(), name='book_series'),
     path('book-series/new/', book_series.BookSeriesNewView.as_view(), name='book_series_new'),
@@ -54,4 +56,15 @@ urlpatterns = [
 
     path('reading-log/new/', reading_log.ReadingLogNewView.as_view(), name='reading_log_new'),
     path('reading-log/', reading_log.ReadingLogListView.as_view(), name='reading_log_list'),
+
+    # Note URLs
+    path('note/', notes.NoteListView.as_view(), name='note'),
+    path('note/new/', notes.NoteNewView.as_view(), name='note_new'),
+    path('note/<int:pk>/', notes.NoteDetailView.as_view(), name='note_detail'),
+    path('note/<int:pk>/update/', notes.NoteUpdateView.as_view(), name='note_update'),
+    path('note/<int:pk>/delete/', notes.NoteDeleteView.as_view(), name='note_delete'),
+
+    # Note autocomplete URLs
+    path('note/autocomplete/', notes.NoteAutocompleteView.as_view(), name='note_autocomplete'),
+    path('keyword/autocomplete/', notes.KeyWordAutocompleteView.as_view(), name='keyword_autocomplete'),
 ]

@@ -1,0 +1,78 @@
+{% extends "base_layout.html" %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}Удаление заметки {{ object.index }}{% endblock %}
+
+{% block content_title %}Подтверждение удаления{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <!-- Навигация -->
+  <div class="mb-4">
+    <a href="{% url 'note_detail' pk=object.pk %}" class="btn btn-outline-secondary btn-sm">
+      &larr; Назад к заметке
+    </a>
+  </div>
+
+  <!-- Форма подтверждения удаления -->
+  <div class="card">
+    <div class="card-body">
+      <!-- Сообщение о наличии дочерних заметок -->
+      {% if object.children.exists %}
+        <div class="alert alert-warning" role="alert">
+          <h5 class="alert-heading">Внимание!</h5>
+          <p>У этой заметки есть дочерние заметки:</p>
+          <ul class="mb-0">
+            {% for child in object.children.all %}
+              <li>
+                <a href="{% url 'note_detail' pk=child.pk %}">
+                  {{ child.index }} {{ child.topic }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+          <hr>
+          <p class="mb-0">
+            <strong>Нельзя удалить заметку с дочерними заметками.</strong>
+            Сначала удалите или переместите дочерние заметки.
+          </p>
+        </div>
+      {% else %}
+        <div class="alert alert-danger" role="alert">
+          <h5 class="alert-heading">Вы уверены?</h5>
+          <p class="mb-0">
+            Вы собираетесь удалить заметку:
+            <strong>{{ object.index }} {{ object.topic }}</strong>
+          </p>
+          <p class="mb-0 text-muted small">Это действие нельзя отменить.</p>
+        </div>
+      {% endif %}
+
+      <!-- Форма удаления -->
+      <form method="post" class="mt-4">
+        {% csrf_token %}
+
+        {% if object.children.exists %}
+          <!-- Если есть дети, кнопка удаления заблокирована -->
+          <div class="d-flex gap-2">
+            <a href="{% url 'note_detail' pk=object.pk %}" class="btn btn-secondary">
+              Отмена
+            </a>
+          </div>
+        {% else %}
+          <!-- Если детей нет, показываем кнопку удаления -->
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-danger">
+              Удалить
+            </button>
+            <a href="{% url 'note_detail' pk=object.pk %}" class="btn btn-secondary">
+              Отмена
+            </a>
+          </div>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

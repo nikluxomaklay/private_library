@@ -10,7 +10,7 @@ from django import forms
 from django.db import models
 
 from .enums import MonthEnum
-from .models import Book, Author, Publisher, BookSeries, ReadingLog, BookEdition
+from .models import Book, Author, Publisher, BookSeries, ReadingLog, BookEdition, Note
 
 
 class BaseFilterSet(django_filters.FilterSet):
@@ -373,11 +373,11 @@ class PublisherFilter(BaseFilterSet):
 class BookSeriesFilter(BaseFilterSet):
     """
     FilterSet for BookSeries model with name search by substring.
-    
+
     Implements requirement:
     - FR-018: Book series name search by substring
     """
-    
+
     name = django_filters.CharFilter(
         field_name='name',
         lookup_expr='icontains',
@@ -388,7 +388,42 @@ class BookSeriesFilter(BaseFilterSet):
             'placeholder': 'Поиск по названию серии'
         })
     )
-    
+
     class Meta:
         model = BookSeries
         fields = ['name']
+
+
+class NoteFilter(BaseFilterSet):
+    """
+    FilterSet для модели Note с поиском по теме и индексу.
+
+    Фильтры:
+    - topic: поиск по теме заметки (icontains)
+    - index: поиск по индексу заметки (icontains)
+    """
+
+    topic = django_filters.CharFilter(
+        field_name='topic',
+        lookup_expr='icontains',
+        label='Тема заметки',
+        max_length=255,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Поиск по теме заметки'
+        })
+    )
+
+    index = django_filters.CharFilter(
+        field_name='index',
+        lookup_expr='icontains',
+        label='Индекс заметки',
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Поиск по индексу заметки'
+        })
+    )
+
+    class Meta:
+        model = Note
+        fields = ['topic', 'index']

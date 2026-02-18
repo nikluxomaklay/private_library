@@ -28,9 +28,9 @@
 
 **Purpose**: Project initialization and structure verification
 
-- [ ] T001 Verify project structure: src/core/, src/front/, src/templates/
-- [ ] T002 [P] Verify dependencies: django-autocomplete-light, django-bootstrap5, django-filter
-- [ ] T003 [P] Verify PostgreSQL database connection and existing migrations
+- [X] T001 Verify project structure: src/core/, src/front/, src/templates/
+- [X] T002 [P] Verify dependencies: django-autocomplete-light, django-bootstrap5, django-filter
+- [X] T003 [P] Verify PostgreSQL database connection and existing migrations
 
 ---
 
@@ -40,11 +40,11 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 [P] Create NoteFilter in src/core/filters.py (django-filter для заметок)
-- [ ] T005 [P] Create NoteForm in src/front/forms/notes.py (базовая форма)
-- [ ] T006 [P] Create NoteToBookEditionFormSet в src/front/forms/notes.py (inline formset)
-- [ ] T007 [P] Create autocomplete views в src/front/views/notes.py (NoteAutocompleteView, KeyWordAutocompleteView)
-- [ ] T008 [P] Add URL patterns для autocomplete в src/front/urls.py
+- [X] T004 [P] Create NoteFilter in src/core/filters.py (django-filter для заметок)
+- [X] T005 [P] Create NoteForm in src/front/forms/notes.py (базовая форма)
+- [X] T006 [P] Create NoteToBookEditionFormSet в src/front/forms/notes.py (inline formset)
+- [X] T007 [P] Create autocomplete views в src/front/views/notes.py (NoteAutocompleteView, KeyWordAutocompleteView)
+- [X] T008 [P] Add URL patterns для autocomplete в src/front/urls.py
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -60,19 +60,19 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T009 [P] [US1] Integration test: note list page renders with hierarchy in src/front/tests/test_note_list.py::test_note_list_hierarchy
-- [ ] T010 [P] [US1] Integration test: pagination applies to top-level notes only in src/front/tests/test_note_list.py::test_note_list_pagination
-- [ ] T011 [P] [US1] Template test: note list displays index and topic in src/front/tests/test_note_templates.py::test_note_list_displays
+- [X] T009 [P] [US1] Integration test: note list page renders with hierarchy in src/front/tests/test_note_list.py::test_note_list_hierarchy
+- [X] T010 [P] [US1] Integration test: pagination applies to top-level notes only in src/front/tests/test_note_list.py::test_note_list_pagination
+- [X] T011 [P] [US1] Template test: note list displays index and topic in src/front/tests/test_note_templates.py::test_note_list_displays
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Create NoteListView в src/front/views/notes.py (PaginationPageSizeMixin, FilterView)
-- [ ] T013 [P] [US1] Create template src/templates/front/notes/note_list.html (иерархия с отступами)
-- [ ] T014 [P] [US1] Create partial template src/templates/front/notes/_note_tree.html (recursive rendering)
-- [ ] T015 [US1] Add URL pattern 'note' в src/front/urls.py
-- [ ] T016 [US1] Add "Notes" пункт в боковое меню в src/templates/base_layout.html
-- [ ] T017 [US1] Implement hierarchical queryset с prefetch_related для дочерних заметок
-- [ ] T018 [US1] Add context processors для передачи иерархии в template
+- [X] T012 [P] [US1] Create NoteListView в src/front/views/notes.py (PaginationPageSizeMixin, FilterView)
+- [X] T013 [P] [US1] Create template src/templates/front/notes/note_list.html (иерархия с отступами)
+- [X] T014 [P] [US1] Create partial template src/templates/front/notes/_note_tree.html (recursive rendering)
+- [X] T015 [US1] Add URL pattern 'note' в src/front/urls.py
+- [X] T016 [US1] Add "Notes" пункт в боковое меню в src/templates/base_layout.html
+- [X] T017 [US1] Implement hierarchical queryset с prefetch_related для дочерних заметок
+- [X] T018 [US1] Add context processors для передачи иерархии в template
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -86,17 +86,17 @@
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T019 [P] [US2] Integration test: note detail page displays all fields in src/front/tests/test_note_detail.py::test_note_detail_displays_all
-- [ ] T020 [P] [US2] Integration test: note detail shows related book editions with info in src/front/tests/test_note_detail.py::test_note_detail_book_editions
+- [X] T019 [P] [US2] Integration test: note detail page displays all fields in src/front/tests/test_note_detail.py::test_note_detail_displays_all
+- [X] T020 [P] [US2] Integration test: note detail shows related book editions with info in src/front/tests/test_note_detail.py::test_note_detail_book_editions
 
 ### Implementation for User Story 2
 
-- [ ] T021 [P] [US2] Create NoteDetailView в src/front/views/notes.py (DetailView с select_related/prefetch_related)
-- [ ] T022 [P] [US2] Create template src/templates/front/notes/note_detail.html
-- [ ] T023 [US2] Add URL pattern 'note_detail' в src/front/urls.py
-- [ ] T024 [US2] Implement index link в note_list.html → note_detail
-- [ ] T025 [US2] Add display logic для parent, keywords, related_notes, book_editions с additional_info
-- [ ] T026 [US2] Add display logic для created_at/updated_at в одной строке
+- [X] T021 [P] [US2] Create NoteDetailView в src/front/views/notes.py (DetailView с select_related/prefetch_related)
+- [X] T022 [P] [US2] Create template src/templates/front/notes/note_detail.html
+- [X] T023 [US2] Add URL pattern 'note_detail' в src/front/urls.py
+- [X] T024 [US2] Implement index link в note_list.html → note_detail
+- [X] T025 [US2] Add display logic для parent, keywords, related_notes, book_editions с additional_info
+- [X] T026 [US2] Add display logic для created_at/updated_at в одной строке
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
@@ -110,15 +110,15 @@
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T027 [P] [US3] Integration test: book edition detail shows related notes in src/front/tests/test_book_edition_detail.py::test_book_edition_shows_notes
-- [ ] T028 [P] [US3] Integration test: related notes display hierarchy in src/front/tests/test_book_edition_detail.py::test_book_edition_notes_hierarchy
+- [X] T027 [P] [US3] Integration test: book edition detail shows related notes in src/front/tests/test_book_edition_detail.py::test_book_edition_shows_notes
+- [X] T028 [P] [US3] Integration test: related notes display hierarchy in src/front/tests/test_book_edition_detail.py::test_book_edition_notes_hierarchy
 
 ### Implementation for User Story 3
 
-- [ ] T029 [P] [US3] Add related_notes queryset property в BookEdition model или view context
-- [ ] T030 [US3] Update template src/templates/book_edition/book_edition_detail.html (добавить блок с заметками)
-- [ ] T031 [US3] Create partial template src/templates/front/notes/_note_tree_readonly.html (для отображения в book edition)
-- [ ] T032 [US3] Implement hierarchical display с отступами для связанных заметок
+- [X] T029 [P] [US3] Add related_notes queryset property в BookEdition model или view context
+- [X] T030 [US3] Update template src/templates/book_edition/book_edition_detail.html (добавить блок с заметками)
+- [X] T031 [US3] Create partial template src/templates/front/notes/_note_tree_readonly.html (для отображения в book edition)
+- [X] T032 [US3] Implement hierarchical display с отступами для связанных заметок
 
 **Checkpoint**: At this point, User Stories 1, 2, AND 3 should all work independently
 
@@ -132,24 +132,24 @@
 
 ### Tests for User Story 4 ⚠️
 
-- [ ] T033 [P] [US4] Integration test: create note with topic only in src/front/tests/test_note_create.py::test_create_note_minimal
-- [ ] T034 [P] [US4] Integration test: create note with book editions inline in src/front/tests/test_note_create.py::test_create_note_with_books
-- [ ] T035 [P] [US4] Validation test: note without topic fails in src/front/tests/test_note_forms.py::test_note_form_requires_topic
-- [ ] T036 [P] [US4] Validation test: circular dependency blocked in src/front/tests/test_note_forms.py::test_circular_dependency_blocked
+- [X] T033 [P] [US4] Integration test: create note with topic only in src/front/tests/test_note_create.py::test_create_note_minimal
+- [X] T034 [P] [US4] Integration test: create note with book editions inline in src/front/tests/test_note_create.py::test_create_note_with_books
+- [X] T035 [P] [US4] Validation test: note without topic fails in src/front/tests/test_note_forms.py::test_note_form_requires_topic
+- [X] T036 [P] [US4] Validation test: circular dependency blocked in src/front/tests/test_note_forms.py::test_circular_dependency_blocked
 
 ### Implementation for User Story 4
 
-- [ ] T037 [P] [US4] Create NoteNewView (CreateView) в src/front/views/notes.py
-- [ ] T038 [P] [US4] Create template src/templates/front/notes/note_new.html
-- [ ] T039 [US4] Add URL pattern 'note_new' в src/front/urls.py
-- [ ] T040 [US4] Add "New note" кнопку в note_list.html
-- [ ] T041 [US4] Implement form validation для topic (required, max 255)
-- [ ] T042 [US4] Implement inline formset handling для NoteToBookEdition
-- [ ] T043 [US4] Implement conditional logic: additional_info disabled без book_edition
-- [ ] T044 [US4] Implement empty element filtering (игнорировать без book_edition)
-- [ ] T045 [US4] Implement circular dependency check при сохранении
-- [ ] T046 [US4] Add success message после создания
-- [ ] T047 [US4] Add redirect to note_detail после успешного создания
+- [X] T037 [P] [US4] Create NoteNewView (CreateView) в src/front/views/notes.py
+- [X] T038 [P] [US4] Create template src/templates/front/notes/note_new.html
+- [X] T039 [US4] Add URL pattern 'note_new' в src/front/urls.py
+- [X] T040 [US4] Add "New note" кнопку в note_list.html
+- [X] T041 [US4] Implement form validation для topic (required, max 255)
+- [X] T042 [US4] Implement inline formset handling для NoteToBookEdition
+- [X] T043 [US4] Implement conditional logic: additional_info disabled без book_edition
+- [X] T044 [US4] Implement empty element filtering (игнорировать без book_edition)
+- [X] T045 [US4] Implement circular dependency check при сохранении
+- [X] T046 [US4] Add success message после создания
+- [X] T047 [US4] Add redirect to note_detail после успешного создания
 
 **Checkpoint**: At this point, User Stories 1-4 should all work independently
 
@@ -163,13 +163,13 @@
 
 ### Tests for User Story 5 ⚠️
 
-- [ ] T048 [P] [US5] Integration test: create note from book edition with pre-filled field in src/front/tests/test_note_create.py::test_create_note_from_book_edition
+- [X] T048 [P] [US5] Integration test: create note from book edition with pre-filled field in src/front/tests/test_note_create.py::test_create_note_from_book_edition
 
 ### Implementation for User Story 5
 
-- [ ] T049 [P] [US5] Add "New note" кнопку в src/templates/book_edition/book_edition_detail.html
-- [ ] T050 [US5] Update NoteNewView для обработки initial['book_editions'] из query params
-- [ ] T051 [US5] Add URL parameter passing из book_edition_detail → note_new
+- [X] T049 [P] [US5] Add "New note" кнопку в src/templates/book_edition/book_edition_detail.html
+- [X] T050 [US5] Update NoteNewView для обработки initial['book_editions'] из query params
+- [X] T051 [US5] Add URL parameter passing из book_edition_detail → note_new
 
 **Checkpoint**: At this point, User Stories 1-5 should all work independently
 
@@ -183,14 +183,14 @@
 
 ### Tests for User Story 6 ⚠️
 
-- [ ] T052 [P] [US6] Integration test: create note from note with pre-filled parent, books, keywords in src/front/tests/test_note_create.py::test_create_note_from_note
+- [X] T052 [P] [US6] Integration test: create note from note with pre-filled parent, books, keywords in src/front/tests/test_note_create.py::test_create_note_from_note
 
 ### Implementation for User Story 6
 
-- [ ] T053 [P] [US6] Add "New note" кнопку в src/templates/front/notes/note_detail.html
-- [ ] T054 [US6] Update NoteNewView для обработки initial из parent note (parent, book_editions, keywords)
-- [ ] T055 [US6] Ensure topic and text fields remain empty при pre-fill из другой заметки
-- [ ] T056 [US6] Add URL parameter passing из note_detail → note_new
+- [X] T053 [P] [US6] Add "New note" кнопку в src/templates/front/notes/note_detail.html
+- [X] T054 [US6] Update NoteNewView для обработки initial из parent note (parent, book_editions, keywords)
+- [X] T055 [US6] Ensure topic and text fields remain empty при pre-fill из другой заметки
+- [X] T056 [US6] Add URL parameter passing из note_detail → note_new
 
 **Checkpoint**: At this point, User Stories 1-6 should all work independently
 
@@ -204,21 +204,21 @@
 
 ### Tests for User Story 7 ⚠️
 
-- [ ] T057 [P] [US7] Integration test: update note topic in src/front/tests/test_note_update.py::test_update_note_topic
-- [ ] T058 [P] [US7] Integration test: update note book editions inline in src/front/tests/test_note_update.py::test_update_note_books
-- [ ] T059 [P] [US7] Validation test: update with circular dependency blocked in src/front/tests/test_note_update.py::test_update_circular_blocked
+- [X] T057 [P] [US7] Integration test: update note topic in src/front/tests/test_note_update.py::test_update_note_topic
+- [X] T058 [P] [US7] Integration test: update note book editions inline in src/front/tests/test_note_update.py::test_update_note_books
+- [X] T059 [P] [US7] Validation test: update with circular dependency blocked in src/front/tests/test_note_update.py::test_update_circular_blocked
 
 ### Implementation for User Story 7
 
-- [ ] T060 [P] [US7] Create NoteUpdateView (UpdateView) в src/front/views/notes.py
-- [ ] T061 [P] [US7] Create template src/templates/front/notes/note_update.html
-- [ ] T062 [US7] Add URL pattern 'note_update' в src/front/urls.py
-- [ ] T063 [US7] Add "Edit" кнопку в note_detail.html
-- [ ] T064 [US7] Implement form pre-population с текущими данными
-- [ ] T065 [US7] Implement inline formset с existing instances
-- [ ] T066 [US7] Implement circular dependency check при обновлении parent
-- [ ] T067 [US7] Add success message после обновления
-- [ ] T068 [US7] Add redirect to note_detail после успешного обновления
+- [X] T060 [P] [US7] Create NoteUpdateView (UpdateView) в src/front/views/notes.py
+- [X] T061 [P] [US7] Create template src/templates/front/notes/note_update.html
+- [X] T062 [US7] Add URL pattern 'note_update' в src/front/urls.py
+- [X] T063 [US7] Add "Edit" кнопку в note_detail.html
+- [X] T064 [US7] Implement form pre-population с текущими данными
+- [X] T065 [US7] Implement inline formset с existing instances
+- [X] T066 [US7] Implement circular dependency check при обновлении parent
+- [X] T067 [US7] Add success message после обновления
+- [X] T068 [US7] Add redirect to note_detail после успешного обновления
 
 **Checkpoint**: At this point, User Stories 1-7 should all work independently
 
@@ -232,18 +232,18 @@
 
 ### Tests for User Story 8 ⚠️
 
-- [ ] T069 [P] [US8] Integration test: delete note without children in src/front/tests/test_note_delete.py::test_delete_note_without_children
-- [ ] T070 [P] [US8] Validation test: delete note with children blocked in src/front/tests/test_note_delete.py::test_delete_note_with_children_blocked
+- [X] T069 [P] [US8] Integration test: delete note without children in src/front/tests/test_note_delete.py::test_delete_note_without_children
+- [X] T070 [P] [US8] Validation test: delete note with children blocked in src/front/tests/test_note_delete.py::test_delete_note_with_children_blocked
 
 ### Implementation for User Story 8
 
-- [ ] T071 [P] [US8] Create NoteDeleteView (DeleteView) в src/front/views/notes.py
-- [ ] T072 [P] [US8] Create template src/templates/front/notes/note_delete.html
-- [ ] T073 [US8] Add URL pattern 'note_delete' в src/front/urls.py
-- [ ] T074 [US8] Add "Delete" кнопку в note_detail.html
-- [ ] T075 [US8] Implement check for children перед удалением
-- [ ] T076 [US8] Implement error message при попытке удаления с дочерними
-- [ ] T077 [US8] Add redirect to note_list после успешного удаления
+- [X] T071 [P] [US8] Create NoteDeleteView (DeleteView) в src/front/views/notes.py
+- [X] T072 [P] [US8] Create template src/templates/front/notes/note_delete.html
+- [X] T073 [US8] Add URL pattern 'note_delete' в src/front/urls.py
+- [X] T074 [US8] Add "Delete" кнопку в note_detail.html
+- [X] T075 [US8] Implement check for children перед удалением
+- [X] T076 [US8] Implement error message при попытке удаления с дочерними
+- [X] T077 [US8] Add redirect to note_list после успешного удаления
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -253,14 +253,14 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T078 [P] Add JavaScript для dynamic inline formset behavior в src/static/front/js/notes.js
-- [ ] T079 [P] Add JavaScript для conditional additional_info field disabling
-- [ ] T080 [P] Add CSS styles для иерархических отступов в src/static/front/css/notes.css
-- [ ] T081 Documentation: Update README.md с описанием системы заметок
-- [ ] T082 Code cleanup and refactoring
-- [ ] T083 Run quickstart.md validation checklist
-- [ ] T084 [P] Run all tests: pytest src/core/tests/ src/front/tests/
-- [ ] T085 Security hardening: CSRF, XSS protection check
+- [X] T078 [P] Add JavaScript для dynamic inline formset behavior в src/static/front/js/notes.js
+- [X] T079 [P] Add JavaScript для conditional additional_info field disabling
+- [X] T080 [P] Add CSS styles для иерархических отступов в src/static/front/css/notes.css
+- [X] T081 Documentation: Update README.md с описанием системы заметок
+- [X] T082 Code cleanup and refactoring
+- [X] T083 Run quickstart.md validation checklist
+- [X] T084 [P] Run all tests: pytest src/core/tests/ src/front/tests/
+- [X] T085 Security hardening: CSRF, XSS protection check
 
 ---
 

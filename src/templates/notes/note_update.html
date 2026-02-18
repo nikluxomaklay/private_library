@@ -1,0 +1,112 @@
+{% extends "base_layout.html" %}
+
+{% load django_bootstrap5 %}
+{% load static %}
+
+{% block title %}Редактирование заметки {{ object.index }}{% endblock %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'front/js/notes.js' %}"></script>
+{% endblock %}
+
+{% block content_title %}Редактирование заметки {{ object.index }}{% endblock %}
+
+{% block actions %}
+    <div class="container my-2 py-2 border justify-content-end">
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <form action="{% url 'note_detail' pk=object.pk %}" method="GET">{% csrf_token %}<button type="submit" class="btn btn-secondary btn-sm">&larr; Назад к заметке</button></form>
+      </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="container my-2 py-2 border">
+  <!-- Форма редактирования заметки -->
+  <div class="row justify-content-left">
+    {% block content_left %}
+    <div class="col-6">
+        <form action="{% url 'note_update' pk=object.pk %}" method="POST">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+
+          <div class="mb-4">
+          <h5 class="card-title mb-3">Связанные книжные издания</h5>
+          {{ formset.management_form }}
+
+          <div id="formset-container" class="container my-2 py-2 border">
+            {% for inline_form in formset %}
+            <div class="formset-item pb-3 mb-3 {% if forloop.last %}border-0{% endif %}">
+              <div class="hidden">{{ inline_form.id }}</div>
+              <div class="row my-2 py-2 justify-content-left">
+                <div class="col-6">
+                  <label for="{{ inline_form.book_edition.id_for_label }}" class="form-label">Издание книги</label>
+                  {{ inline_form.book_edition }}
+                  {% if inline_form.book_edition.errors %}
+                    <div class="invalid-feedback d-block">{{ inline_form.book_edition.errors|join:", " }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="row my-2 py-2 justify-content-left">
+                <div class="col-6">
+                  <label for="{{ inline_form.additional_info.id_for_label }}" class="form-label">Дополнительная информация</label>
+                  {{ inline_form.additional_info }}
+                  {% if inline_form.additional_info.errors %}
+                    <div class="invalid-feedback d-block">{{ inline_form.additional_info.errors|join:", " }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="mt-2">
+                {% if inline_form.instance.pk %}
+                  <label class="form-check-label">
+                    {{ inline_form.DELETE }} Удалить связь
+                  </label>
+                {% else %}
+                    <button type="button" class="btn btn-outline-danger btn-sm remove-form">Удалить</button>
+                {% endif %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          <button type="button" id="add-form" class="btn btn-outline-primary btn-sm mt-2">
+            + Добавить издание
+          </button>
+        </div>
+
+          <input type="submit" value="Save">
+      </form>
+    </div>
+    {% endblock %}
+  </div>
+</div>
+
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+
+{{ form.media }}
+
+<script>
+(function($) {
+    $('#add-form').click(function() {
+        var index = $('#id_inline_test_models-TOTAL_FORMS').val()
+        var newTable = $('#id_inline_test_models-__prefix__-DELETE').parents('table').clone()
+        newTable.find(':input').each(function() {
+            for (attr of ['name', 'id'])
+                $(this).attr(
+                    attr,
+                    $(this).attr(attr).replace('__prefix__', index)
+                )
+        })
+        newTable.insertBefore($(this))
+        $('#id_inline_test_models-TOTAL_FORMS').val(
+            parseInt($('#id_inline_test_models-TOTAL_FORMS').val()) + 1
+        )
+        newTable.slideDown()
+    })
+})($)
+</script>
+{% endblock %}
