@@ -1,7 +1,8 @@
 # Data Model: Zettelkasten Notes System
 
-**Date**: 17 февраля 2026 г.
+**Date**: 18 февраля 2026 г.
 **Feature**: Zettelkasten Notes System
+**Status**: ✅ **IMPLEMENTED** - Модели реализованы в `src/core/models.py`
 
 ---
 
@@ -16,21 +17,23 @@
 | Field | Type | Constraints | Description |
 |-------|------|-------------|-------------|
 | index | TextField | db_index=True, unique=True | Индекс заметки (генерируется автоматически) |
-| parent | ForeignKey(self) | on_delete=PROTECT, null, blank | Родительская заметка |
+| root | ForeignKey(self) | on_delete=PROTECT, null=True, blank=True, related_name='descendants' | Корневая заметка дерева |
+| parent | ForeignKey(self) | on_delete=PROTECT, null=True, blank=True, related_name='children' | Родительская заметка |
 | related_notes | M2M(self) | - | Связанные заметки |
 | keywords | M2M(KeyWord) | related_name='notes' | Ключевые слова |
 | topic | CharField | max_length=255, not null | Тема заметки |
 | text | TextField | null, blank | Текст заметки |
-| created_at | DateTimeField | auto_now-add=True | Дата создания |
+| created_at | DateTimeField | auto_now_add=True | Дата создания |
 | updated_at | DateTimeField | auto_now=True | Дата обновления |
 
 **Методы**:
-- `save_base()`: Генерирует индекс при создании
+- `save_base()`: Генерирует индекс при создании, устанавливает root из parent
 - `__str__()`: Возвращает "{index} {topic}"
 
 **Ограничения**:
-- `on_delete=PROTECT` для parent - блокирует удаление родительской заметки
+- `on_delete=PROTECT` для parent и root - блокирует удаление родительской заметки
 - Циклические зависимости должны блокироваться при сохранении
+- root указывает на корневую заметку дерева (для верхнеуровневых заметок root=None)
 
 ### NoteToBookEdition
 
@@ -58,10 +61,11 @@
 ┌─────────────┐
 │    Note     │
 │             │
-│ - index     │
-│ - parent    │──┐ (self-referential, hierarchy)
-│ - topic     │  │
-│ - text      │  │
+│ - index     │──┐ (self-referential, hierarchy)
+│ - root      │──┤
+│ - parent    │──┘
+│ - topic     │
+│ - text      │
 │ - keywords  │──┼── M2M ──┐
 │             │  │         │
 └─────────────┘  │         ▼
@@ -156,7 +160,7 @@ Note.objects.filter(parent=parent_note).order_by('index')
 3. **Получить заметку со всеми связями**:
 ```python
 Note.objects.select_related(
-    'parent'
+    'parent', 'root'
 ).prefetch_related(
     'keywords',
     'related_notes',
@@ -168,7 +172,12 @@ Note.objects.select_related(
 ```python
 Note.objects.filter(
     book_editions__book_edition=book_edition
-).select_related('parent').order_by('index')
+).select_related('parent', 'root').order_by('index')
+```
+
+5. **Получить дерево заметок начиная с корневой**:
+```python
+Note.objects.filter(root=root_note).order_by('index')
 ```
 
 ---
@@ -178,3 +187,4 @@ Note.objects.filter(
 - **Unique constraint** на `index` поле
 - **Index** на `index` поле для ускорения сортировки
 - **PROTECT** на всех FK для предотвращения случайного удаления связанных записей
+- **PROTECT** на `root` и `parent` для сохранения целостности иерархии
