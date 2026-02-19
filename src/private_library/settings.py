@@ -73,9 +73,14 @@ ROOT_URLCONF = 'private_library.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
-        'APP_DIRS': True,
+        'DIRS': [BASE_DIR / 'templates'],  # Use absolute path
+        'APP_DIRS': False,  # Disabled because we use custom loaders
         'OPTIONS': {
+            'debug': True,  # Enable debug mode for templates (disables caching)
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ],
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',

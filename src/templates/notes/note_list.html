@@ -1,0 +1,127 @@
+{% extends "base_layout.html" %}
+
+{% load django_bootstrap5 %}
+{% load static %}
+
+{% block title %}Notes{% endblock %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block content_title %}Notes{% endblock %}
+
+{% block actions %}
+<div class="container my-2 py-2 border justify-content-end">
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <a href="{% url 'note_new' %}" class="btn btn-primary">New note</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block filters %}
+<div class="container my-2 py-2 border justify-content-end">
+    <form method="get" class="mb-4">
+        <div class="row g-3 align-items-end">
+          <div class="col-md-4">
+            {{ filter.form.topic.label_tag }}
+            {{ filter.form.topic }}
+          </div>
+          <div class="col-md-4">
+            {{ filter.form.index.label_tag }}
+            {{ filter.form.index }}
+          </div>
+        </div>
+        <div class="row g-3 mt-2">
+          <div class="col-md-4">
+            <button type="submit" class="btn btn-primary w-100">Фильтровать</button>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'note' %}" class="btn btn-secondary w-100">Сбросить фильтры</a>
+          </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container my-2 py-2 border">
+  <!-- Pagination and Results Count -->
+  <form method="get" class="mb-2 d-flex w-100 align-items-center">
+    <div class="flex-grow-1">
+      <label for="page_size" class="me-2">Показывать по:</label>
+      <select name="page_size" id="page_size" class="form-select form-select-sm w-auto d-inline" onchange="this.form.submit()">
+        {% for size in page_size_choices %}
+          <option value="{{ size }}" {% if page_size_selected == size %}selected{% endif %}>{{ size }}</option>
+        {% endfor %}
+      </select>
+      <!-- Preserve filter parameters -->
+      {% for key, value in request.GET.items %}
+        {% if key != 'page_size' and key != 'page' %}
+          <input type="hidden" name="{{ key }}" value="{{ value }}">
+        {% endif %}
+      {% endfor %}
+      <noscript><button type="submit" class="btn btn-sm btn-secondary">OK</button></noscript>
+    </div>
+    {% if is_paginated %}
+    <div class="d-flex justify-content-end flex-grow-1">
+      <nav>
+        <ul class="pagination pagination-sm mb-0">
+          {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link btn btn-sm btn-outline-secondary" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}&page_size={{ page_obj.paginator.per_page }}">&laquo;</a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link btn btn-sm btn-outline-secondary">&laquo;</span></li>
+          {% endif %}
+          {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+              <li class="page-item active"><span class="page-link btn btn-sm btn-outline-secondary">{{ num }}</span></li>
+            {% else %}
+              <li class="page-item"><a class="page-link btn btn-sm btn-outline-secondary" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ num }}&page_size={{ page_obj.paginator.per_page }}">{{ num }}</a></li>
+            {% endif %}
+          {% endfor %}
+          {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link btn btn-sm btn-outline-secondary" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}&page_size={{ page_obj.paginator.per_page }}">&raquo;</a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link btn btn-sm btn-outline-secondary">&raquo;</span></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+    {% endif %}
+  </form>
+
+  <!-- Results: Hierarchical Note Tree -->
+  <ul class="note-tree list-unstyled">
+    {% if page_obj %}
+      {% for note in page_obj %}
+        {% include 'notes/_note_tree.html' with note=note level=0 %}
+      {% endfor %}
+    {% else %}
+      <li class="text-muted py-3">Заметки не найдены.</li>
+    {% endif %}
+  </ul>
+
+  {% if is_paginated %}
+  <nav class="d-flex justify-content-end">
+    <ul class="pagination pagination-sm mb-0">
+      {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link btn btn-sm btn-outline-secondary" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}&page_size={{ page_obj.paginator.per_page }}">&laquo;</a></li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link btn btn-sm btn-outline-secondary">&laquo;</span></li>
+      {% endif %}
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <li class="page-item active"><span class="page-link btn btn-sm btn-outline-secondary">{{ num }}</span></li>
+        {% else %}
+          <li class="page-item"><a class="page-link btn btn-sm btn-outline-secondary" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ num }}&page_size={{ page_obj.paginator.per_page }}">{{ num }}</a></li>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link btn btn-sm btn-outline-secondary" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}&page_size={{ page_obj.paginator.per_page }}">&raquo;</a></li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link btn btn-sm btn-outline-secondary">&raquo;</span></li>
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+</div>
+{% endblock %}

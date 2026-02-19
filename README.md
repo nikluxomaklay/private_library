@@ -11,7 +11,55 @@
 - **Reading Log**: Track when you start and finish reading books with month/year precision
 - **Series & Publishers**: Organize books by series and track publishing information
 - **Advanced Search**: Autocomplete functionality and filtering by various parameters
+- **Zettelkasten Notes**: Hierarchical note-taking system with book edition links and keywords
 
+
+---
+
+## Zettelkasten Notes System
+
+The Private Library includes a full-featured Zettelkasten notes system for managing hierarchical notes linked to book editions.
+
+### Features
+
+- **CRUD Operations**: Create, read, update, and delete notes
+- **Hierarchical Structure**: Parent-child note relationships with visual tree display
+- **Book Edition Links**: Connect notes to specific book editions with additional info
+- **Keywords**: Tag notes with keywords for easy organization and search
+- **Autocomplete**: Smart autocomplete for parent notes, keywords, and book editions
+- **Pagination**: Configurable pagination for note lists (default: 25 per page)
+- **Filters**: Filter notes by topic and index
+
+### URL Patterns
+
+| URL | View | Description |
+|-----|------|-------------|
+| `/note/` | NoteListView | List all notes with hierarchy |
+| `/note/new/` | NoteNewView | Create new note |
+| `/note/<int:pk>/` | NoteDetailView | View note details |
+| `/note/<int:pk>/update/` | NoteUpdateView | Edit note |
+| `/note/<int:pk>/delete/` | NoteDeleteView | Delete note |
+| `/note/autocomplete/` | NoteAutocompleteView | Autocomplete for parent notes |
+| `/keyword/autocomplete/` | KeyWordAutocompleteView | Autocomplete for keywords |
+
+### Data Models
+
+- **Note**: Main note model with topic, text, parent (self-referential), and timestamps
+- **NoteToBookEdition**: Through model linking notes to book editions with additional_info
+- **KeyWord**: Keyword model for tagging notes
+
+### Static Assets
+
+- **CSS**: `src/static/front/css/notes.css` - Hierarchical indent styles
+- **JavaScript**: `src/static/front/js/notes.js` - Dynamic formset behavior
+
+### User Scenarios
+
+1. **Create note from list**: Navigate to Notes → New note → Fill form → Save
+2. **Create note from book edition**: On book edition page → New note → Form pre-filled → Save
+3. **Create child note**: On parent note page → New note → Parent pre-filled → Save
+4. **Edit note**: On note detail page → Edit → Modify fields → Save changes
+5. **Delete note**: On note detail page → Delete → Confirm (blocked if has children)
 
 ---
 
