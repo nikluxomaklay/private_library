@@ -1,0 +1,8 @@
+{% extends 'reading_log/reading_log_new.html' %}
+{% load django_bootstrap5 %}
+
+{% block title %}Редактировать Reading Log{% endblock %}
+{% block content_title %}Редактировать Reading Log{% endblock %}
+
+{% block actions %}{% endblock %}
+{% block form_action %}{% url 'readinglog_detail' pk=readinglog.pk %}{% endblock %}

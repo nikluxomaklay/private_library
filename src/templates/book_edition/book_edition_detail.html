@@ -12,13 +12,18 @@
     <a href="{% url 'note_new' %}?book_edition={{ object.pk }}" class="btn btn-primary btn-sm">
       New note
     </a>
-    <form action="{% url 'reading_log_new' %}" method="GET">
-      {% csrf_token %}
-      <input type="hidden" name="book_edition" value="{{ object.pk }}">
-      <button type="submit" class="btn btn-secondary btn-sm">Add reading log</button>
-    </form>
-    <form action="{% url 'book_edition_update' pk=object.pk %}" method="GET">{% csrf_token %}<button type="submit" class="btn btn-secondary btn-sm">Update book edition</button></form>
-    <form action="{% url 'book_edition_delete' pk=object.pk %}" method="GET">{% csrf_token %}<button type="submit" class="btn btn-danger btn-sm">Delete book edition</button></form>
+    <a href="{% url 'reading_log_new' %}?book_edition={{ object.pk }}" class="btn btn-primary btn-sm">
+      Add reading log
+    </a>
+    <a href="{% url 'book_edition_update' pk=object.pk %}" class="btn btn-secondary btn-sm">
+      Update book edition
+    </a>
+    <a href="{% url 'book_edition_delete' pk=object.pk %}" class="btn btn-danger btn-sm">
+      Delete book edition
+    </a>
+    <a href="javascript:history.back()" class="btn btn-secondary btn-sm">
+      Back
+    </a>
   </div>
 </div>
 {% endblock %}
@@ -46,7 +51,11 @@
   <ul>
     {% autoescape off %}
     {% for log in object.reading_logs.all %}
-      <li>{{ log.period_for_template }}</li>
+      <li>
+        <a href="{% url 'readinglog_detail' log.pk %}">
+          {{ log.period_for_template }}
+        </a>
+      </li>
     {% endfor %}
     {% endautoescape %}
   </ul>

@@ -295,27 +295,41 @@ class ReadingLog(models.Model):
                     f'{self.get_month_finish_display()}'
                 )
         else:
-            year_start_link = (
-                f'<a href="{self.year_start.get_absolute_url()}">'
-                f'{self.year_start}'
-                f'</a>'
-            )
-            year_finish_link = (
-                f'<a href="{self.year_finish.get_absolute_url()}">'
-                f'{self.year_finish}'
-                f'</a>'
-            )
+            if self.year_start:
+                year_start_link = (
+                    f'<a href="{self.year_start.get_absolute_url()}">'
+                    f'{self.year_start}'
+                    f'</a>'
+                )
+            else:
+                year_start_link = None
 
-            if self.month_start:
+            if self.year_finish:
+                year_finish_link = (
+                    f'<a href="{self.year_finish.get_absolute_url()}">'
+                    f'{self.year_finish}'
+                    f'</a>'
+                )
+            else:
+                year_finish_link = None
+
+            if year_start_link and self.month_start:
                 start_result = f'{year_start_link} {self.get_month_start_display()}'
             else:
                 start_result = year_start_link
-            if self.month_finish:
+            if year_finish_link and self.month_finish:
                 finish_result = f'{year_finish_link} {self.get_month_finish_display()}'
             else:
                 finish_result = year_finish_link
 
-            result = f'{start_result} - {finish_result}'
+            if year_start_link and year_finish_link:
+                result = f'{start_result} - {finish_result}'
+            elif year_start_link:
+                result = f'{start_result} - ...'
+            elif year_finish_link:
+                result = f'... - {finish_result}'
+            else:
+                result = '-'
 
         return result
 

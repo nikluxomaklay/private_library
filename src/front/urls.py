@@ -56,6 +56,8 @@ urlpatterns = [
 
     path('reading-log/new/', reading_log.ReadingLogNewView.as_view(), name='reading_log_new'),
     path('reading-log/', reading_log.ReadingLogListView.as_view(), name='reading_log_list'),
+    path('reading-log/<int:pk>/', reading_log.ReadingLogDetailView.as_view(), name='readinglog_detail'),
+    path('reading-log/<int:pk>/update/', reading_log.ReadingLogUpdateView.as_view(), name='readinglog_update'),
 
     # Note URLs
     path('note/', notes.NoteListView.as_view(), name='note'),
