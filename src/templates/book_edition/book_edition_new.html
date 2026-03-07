@@ -17,7 +17,10 @@
         <form id="add-form" action="{% block form_action %}{% url 'book_edition_new' %}{% endblock %}" method="POST">
           {% csrf_token %}
           {% bootstrap_form form %}
-          <input type="submit" value="Save">
+          <input type="submit" value="Save" class="btn btn-primary btn-sm">
+          <a href="javascript:history.back()" class="btn btn-secondary btn-sm">
+            Назад
+          </a>
         </form>
       </div>
     {% endblock %}

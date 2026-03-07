@@ -1,0 +1,33 @@
+{% extends 'reading_log/reading_log_new.html' %}
+
+{% block title %}Reading Log: {{ readinglog.period }}{% endblock %}
+
+{% block content_title %}Reading Log{% endblock %}
+
+{% block actions %}
+<div class="container my-2 py-2 border justify-content-end">
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <a href="{% url 'reading_log_new' %}?book_edition={{ readinglog.book_edition_id }}" class="btn btn-primary btn-sm">
+      Add reading log
+    </a>
+    <a href="{% url 'readinglog_update' readinglog.pk %}" class="btn btn-secondary btn-sm">
+      Update
+    </a>
+    <a href="javascript:history.back()" class="btn btn-secondary btn-sm">
+      Back
+    </a>
+  </div>
+</div>
+{% endblock %}
+
+{% block content_left %}
+<div class="col-6">
+    <ul>
+        <li>Book edition: <a href="{{ readinglog.book_edition.get_absolute_url }}">{{ readinglog.book_edition }}</a></li>
+        <li>Year start: {% if readinglog.year_start %}<a href="{{ readinglog.year_start.get_absolute_url }}">{{ readinglog.year_start }}</a>{% else %}—{% endif %}</li>
+        <li>Month start: {% if readinglog.month_start %}{{ readinglog.get_month_start_display }}{% else %}—{% endif %}</li>
+        <li>Year finish: {% if readinglog.year_finish %}<a href="{{ readinglog.year_finish.get_absolute_url }}">{{ readinglog.year_finish }}</a>{% else %}—{% endif %}</li>
+        <li>Month finish: {% if readinglog.month_finish %}{{ readinglog.get_month_finish_display }}{% else %}—{% endif %}</li>
+    </ul>
+</div>
+{% endblock %}
