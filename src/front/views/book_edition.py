@@ -45,7 +45,8 @@ class BookEditionDetailView(DetailView):
         """
         context = super().get_context_data(**kwargs)
         root_ids = Note.objects.filter(
-            book_editions__book_edition=self.object
+            book_editions__book_edition=self.object,
+            parent__isnull=True,
         ).values_list('id', 'root')
         root_ids = [item[0] if item[1] is None else item[1] for item in root_ids]
         context['notes'] = Note.objects.filter(

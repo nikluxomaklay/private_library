@@ -1,8 +1,7 @@
-from django.db import models, transaction
+from django.db import models
 from django.urls import reverse
 
 from core.enums import MonthEnum
-from core.helpers import generate_note_number
 
 
 class Book(models.Model):
@@ -121,7 +120,9 @@ class BookEdition(models.Model):
         related_name='book_editions',
         null=True, blank=True,
     )
-    publication_year = models.PositiveSmallIntegerField(null=True, blank=True, db_index=True)  # For filtering
+    publication_year = models.PositiveSmallIntegerField(
+        null=True, blank=True, db_index=True,
+    )  # For filtering
     isbn = models.CharField(
         max_length=20,
         null=True, blank=True,
@@ -265,11 +266,15 @@ class ReadingLog(models.Model):
                 )
         else:
             if self.month_start:
-                start_result = f'{self.year_start} {self.get_month_start_display()}'
+                start_result = (
+                    f'{self.year_start} {self.get_month_start_display()}'
+                )
             else:
                 start_result = str(self.year_start)
             if self.month_finish:
-                finish_result = f'{self.year_finish} {self.get_month_finish_display()}'
+                finish_result = (
+                    f'{self.year_finish} {self.get_month_finish_display()}'
+                )
             else:
                 finish_result = str(self.year_finish)
 
@@ -314,11 +319,15 @@ class ReadingLog(models.Model):
                 year_finish_link = None
 
             if year_start_link and self.month_start:
-                start_result = f'{year_start_link} {self.get_month_start_display()}'
+                start_result = (
+                    f'{year_start_link} {self.get_month_start_display()}'
+                )
             else:
                 start_result = year_start_link
             if year_finish_link and self.month_finish:
-                finish_result = f'{year_finish_link} {self.get_month_finish_display()}'
+                finish_result = (
+                    f'{year_finish_link} {self.get_month_finish_display()}'
+                )
             else:
                 finish_result = year_finish_link
 
@@ -343,7 +352,13 @@ class KeyWord(models.Model):
 
 class Note(models.Model):
     index = models.TextField(db_index=True, unique=True)
-    root = models.ForeignKey('self', on_delete=models.PROTECT, null=True, blank=True, related_name='descendants')
+    root = models.ForeignKey(
+        'self',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name='descendants',
+    )
     parent = models.ForeignKey(
         'self',
         on_delete=models.PROTECT,
@@ -361,21 +376,17 @@ class Note(models.Model):
     def __str__(self):
         return f'{self.index} {self.topic}'
 
-    def save_base(self, *args, **kwargs):
-        if not self.index:
-            query = Note.objects.select_for_update().all()
-            with transaction.atomic():
-                self.index = generate_note_number(self, query)
-                if self.parent_id:
-                    parent = Note.objects.get(id=self.parent_id)
-                    self.root = parent.root
-                else:
-                    self.root = None
-        super().save_base(*args, **kwargs)
+    @property
+    def ordered_children(self):
+        return self.children.order_by('index')
 
 
 class NoteToBookEdition(models.Model):
-    note = models.ForeignKey('Note', on_delete=models.PROTECT, related_name='book_editions')
+    note = models.ForeignKey(
+        'Note',
+        on_delete=models.PROTECT,
+        related_name='book_editions',
+    )
     book_edition = models.ForeignKey(
         'BookEdition',
         on_delete=models.PROTECT,

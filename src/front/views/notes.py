@@ -37,7 +37,11 @@ class NoteListView(PaginationPageSizeMixin, FilterView):
     ordering = ['created_at']
     queryset = Note.objects.filter(
         parent__isnull=True
-    ).prefetch_related('children')
+    ).prefetch_related(
+        'children',
+    ).order_by(
+        'index',
+    )
     
     def get_template_names(self):
         """
@@ -343,6 +347,10 @@ class NoteAutocompleteView(autocomplete.Select2QuerySetView):
         Если есть поисковый запрос (self.q), фильтрует по topic или index.
         """
         qs = Note.objects.order_by('-created_at').all()
+
+        if 'index' in self.forwarded:
+            qs = qs.exclude(index=self.forwarded['index'])
+
         if self.q:
             qs = qs.filter(
                 Q(topic__istartswith=self.q) |

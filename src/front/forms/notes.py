@@ -12,7 +12,11 @@ from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
 from django.utils.translation import gettext_lazy as _
 
-from core.models import Note, NoteToBookEdition
+from core.helpers import compress_note_indexes
+from core.helpers import generate_note_index
+from core.helpers import update_children_indexes
+from core.models import Note
+from core.models import NoteToBookEdition
 
 
 class NoteForm(forms.ModelForm):
@@ -26,12 +30,18 @@ class NoteForm(forms.ModelForm):
     - keywords: ключевые слова (autocomplete, множественный выбор, необязательное)
     """
 
+    _index_changed: bool = False
+
     class Meta:
         model = Note
-        fields = ('topic', 'text', 'parent', 'keywords')
+        fields = ('index', 'root', 'topic', 'text', 'parent', 'keywords')
         widgets = {
+            'id': forms.widgets.HiddenInput(),
+            'index': forms.widgets.HiddenInput(),
+            'root': forms.widgets.HiddenInput(),
             'parent': autocomplete.ModelSelect2(
                 url='note_autocomplete',
+                forward=['index'],
                 attrs={
                     'data-theme': 'bootstrap-5',
                     'data-placeholder': 'Выберите родительскую заметку...',
@@ -103,6 +113,37 @@ class NoteForm(forms.ModelForm):
                 )
         
         return parent
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        parent = cleaned_data.get('parent')
+
+        if not self.instance.pk:
+            cleaned_data['index'] = generate_note_index(
+                parent.pk if parent else None,
+            )
+
+        if parent:
+            cleaned_data['root'] = parent.root
+
+        if (
+            parent and parent.id != self.instance.parent_id or
+            self.instance.parent_id and not parent
+        ):
+            cleaned_data['index'] = generate_note_index(parent.id, exclude_ids=[self.instance.pk])
+            self._index_changed = True
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        result = super().save(commit)
+        if self._index_changed:
+            update_children_indexes(result)
+
+        compress_note_indexes()
+
+        return result
 
     def _is_descendant(self, potential_descendant, potential_ancestor):
         """
