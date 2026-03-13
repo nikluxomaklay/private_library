@@ -123,6 +123,7 @@ class NoteForm(forms.ModelForm):
             cleaned_data['index'] = generate_note_index(
                 parent.pk if parent else None,
             )
+            self._errors.pop('index', None)
 
         if parent:
             cleaned_data['root'] = parent.root
