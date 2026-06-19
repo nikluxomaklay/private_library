@@ -11,7 +11,7 @@ Implement filtering functionality for 6 different list pages (Reading log, Autho
 
 ## Technical Context
 
-**Language/Version**: Python 3.11, Django 4.x
+**Language/Version**: Python 3.12, Django 4.x
 **Primary Dependencies**: django, django-bootstrap5, django-autocomplete-light, django-filter (existing project dependencies)
 **Storage**: PostgreSQL (existing project database)
 **Testing**: pytest, django testing framework

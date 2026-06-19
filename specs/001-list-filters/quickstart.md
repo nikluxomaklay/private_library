@@ -4,7 +4,7 @@
 This guide explains how to implement and use the filtering functionality for the 6 list pages in the private library application using django-filter.
 
 ## Prerequisites
-- Python 3.11+
+- Python 3.12+
 - Django 4.x
 - django-bootstrap5
 - django-autocomplete-light (for dynamic selectors)

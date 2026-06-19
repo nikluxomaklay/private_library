@@ -9,7 +9,7 @@
 
 ## Technical Context
 
-**Language/Version**: Python 3.11
+**Language/Version**: Python 3.12
 **Primary Dependencies**: Django 5.1.1, django-bootstrap5 24.3, django-autocomplete-light 3.12.1
 **Storage**: PostgreSQL
 **Testing**: pytest

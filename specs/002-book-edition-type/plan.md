@@ -17,7 +17,7 @@ This plan implements the book edition type feature by adding a choice field to t
   the iteration process.
 -->
 
-**Language/Version**: Python 3.11
+**Language/Version**: Python 3.12
 **Primary Dependencies**: Django 4.x, django-bootstrap5, django-autocomplete-light
 **Storage**: PostgreSQL
 **Testing**: pytest

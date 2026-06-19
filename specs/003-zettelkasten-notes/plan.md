@@ -13,7 +13,7 @@
 
 ## Technical Context
 
-**Language/Version**: Python 3.11
+**Language/Version**: Python 3.12
 **Primary Dependencies**: Django 4.x, django-bootstrap5, django-autocomplete-light
 **Storage**: PostgreSQL (существующая БД библиотеки)
 **Testing**: pytest, pytest-django
@@ -177,7 +177,7 @@ tests/
 ✅ **Завершено**: Qwen agent context updated
 
 **Updated**:
-- Language: Python 3.11
+- Language: Python 3.12
 - Framework: Django 4.x, django-bootstrap5, django-autocomplete-light
 - Database: PostgreSQL
 
